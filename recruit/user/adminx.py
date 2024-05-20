@@ -1,42 +1,32 @@
 import xadmin
-
-from user.models import Student, Teacher, Clazz
+from user.models import Jobseeker, HR, Company
 from import_export import resources
+from user.resource import JobseekerResource
 
-from user.resource import StudentResource
-
-
-class ClazzAdmin(object):
-    list_display = ['id', 'year', 'major', 'clazz']
-    list_filter = ['year', 'major']
-    search_fields = ['id', 'year', 'major', 'clazz']
-    list_display_links = ['clazz']
-    list_per_page = 10
-    # list_editable = ['name']
-    model_icon = 'fa fa-institution '
-
-
-class StudentAdmin(object):
-    list_display = ['id', 'name', 'user', 'gender', 'clazz']
-    list_filter = ['gender', 'clazz']
-    search_fields = ['id', 'name', 'clazz']
+class CompanyAdmin(object):
+    list_display = ['id', 'name', 'industry', 'location']
+    list_filter = ['industry', 'location']
+    search_fields = ['id', 'name', 'industry', 'location']
     list_display_links = ['name']
     list_per_page = 10
-    model_icon = 'fa fa-user-circle-o'
+    model_icon = 'fa fa-building'  # xadmin中显示的图标
+class JobseekerAdmin(object):
+    list_display = ['id', 'name', 'user', 'gender', 'resume', 'skills']
+    list_filter = ['gender', 'skills']
+    search_fields = ['id', 'name', 'skills']
+    list_display_links = ['name']
+    list_per_page = 10
+    model_icon = 'fa fa-user'
     relfield_style = 'fk-ajax'
-    # import_export_args = {'import_resource_class' : StudentResource, 'export_resource_class': StudentResource}
-    import_export_args = {'import_resource_class' : StudentResource}
-
-
-class TeacherAdmin(object):
-    list_display = ['id', 'name', 'user', 'gender', 'title', 'institute']
-    list_filter = ['gender', 'title', 'institute']
-    search_fields = ['id', 'name']
+    import_export_args = {'import_resource_class': JobseekerResource}
+class HRAdmin(object):
+    list_display = ['id', 'name', 'user', 'department', 'company']
+    list_filter = ['company', 'department']
+    search_fields = ['id', 'name', 'department', 'company__name']
     list_display_links = ['name']
     list_per_page = 10
-    model_icon = 'fa fa-graduation-cap'
+    model_icon = 'fa fa-users'
 
-
-xadmin.site.register(Student, StudentAdmin)
-xadmin.site.register(Teacher, TeacherAdmin)
-xadmin.site.register(Clazz, ClazzAdmin)
+xadmin.site.register(Jobseeker, JobseekerAdmin)
+xadmin.site.register(HR, HRAdmin)
+xadmin.site.register(Company, CompanyAdmin)
