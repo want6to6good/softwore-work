@@ -11,9 +11,9 @@ class CompanyAdmin(object):
     list_per_page = 10
     model_icon = 'fa fa-building'  # xadmin中显示的图标
 class JobseekerAdmin(object):
-    list_display = ['id', 'name', 'user', 'gender', 'resume', 'skills']
-    list_filter = ['gender', 'skills']
-    search_fields = ['id', 'name', 'skills']
+    list_display = ['id', 'name', 'user', 'gender']
+    list_filter = ['gender']
+    search_fields = ['id', 'name']
     list_display_links = ['name']
     list_per_page = 10
     model_icon = 'fa fa-user'

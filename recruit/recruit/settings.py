@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+import datetime
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -37,6 +37,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'xadmin',
+    'crispy_forms',
+    'rest_framework',
+    'django_filters',
+    'import_export',
+    'user',
+    'job',
+    'resume',
 ]
 
 MIDDLEWARE = [
@@ -77,7 +85,7 @@ WSGI_APPLICATION = 'recruit.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': str(BASE_DIR / 'db.sqlite3'),
     }
 }
 
@@ -124,3 +132,24 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# restframework配置
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        # Json Web Token
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+    ),
+    # restframework新版3.10.1需要指定默认schema
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
+}
+
+# JWT设置
+JWT_AUTH = {
+    # token的有效期限
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=7),
+    # JWT跟前端保持一致，比如“token”这里设置成JWT
+    'JWT_AUTH_HEADER_PREFIX': 'JWT',
+    # 自定义方法返回用户信息
+    'JWT_RESPONSE_PAYLOAD_HANDLER': 'user.views.jwt_response_payload_handler'
+}

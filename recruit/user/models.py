@@ -25,7 +25,6 @@ class HR(models.Model):
         db_table = 'user_hr'
         verbose_name = 'HR'
         verbose_name_plural = verbose_name
-
     def __str__(self):
         return self.name
 class Jobseeker(models.Model):
@@ -37,8 +36,6 @@ class Jobseeker(models.Model):
     name = models.CharField("姓名", max_length=20, default="")
     user = models.OneToOneField(User, verbose_name="用户", on_delete=models.CASCADE)
     gender = models.CharField("性别", max_length=1, choices=GENDER_CHOICES, default="")
-    resume = models.TextField("简历", blank=True)  # 新增字段，保存求职者的简历信息
-    skills = models.CharField("技能", max_length=200, blank=True)  # 新增字段，保存求职者的技能信息
     class Meta:
         ordering = ['id']
         db_table = 'user_jobseeker'
