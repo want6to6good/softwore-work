@@ -15,13 +15,29 @@ Including another URLconf
 """
 import xadmin
 from django.contrib import admin
-from django.urls import path
+from django.urls import path,include, re_path
 from rest_framework_jwt.views import obtain_jwt_token
 from rest_framework.routers import DefaultRouter
+from job.views import JobListViewSet,ApplicationListViewSet,UpdateApplicationStatusView,CreateJobView
+from resume.views import ResumeView
+from user.views import JobseekerViewSet, HRViewSet, CompanyViewSet,UpdatePwdApi
+
 router = DefaultRouter()
+
+router.register(r'job', JobListViewSet)
+router.register(r'application', ApplicationListViewSet)
+router.register(r'jobseeker', JobseekerViewSet)
+router.register(r'hr', HRViewSet)
+router.register(r'company', CompanyViewSet)
+
 
 urlpatterns = [
     path('xadmin/', xadmin.site.urls),
     path('jwt-auth/', obtain_jwt_token),
-    path('admin/', admin.site.urls),
+    path('update-pwd/', UpdatePwdApi.as_view()),
+    path('api-auth/', include('rest_framework.urls')),
+    path('update/', UpdateApplicationStatusView),
+    path('create/', CreateJobView),
+    path('chang_resume/', ResumeView),
+    re_path('^', include(router.urls))
 ]

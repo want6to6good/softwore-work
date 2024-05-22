@@ -82,25 +82,19 @@ class UpdatePwdApi(APIView):
         # 返回数据
         return Response(data={'msg': 'success'}, status=status.HTTP_200_OK)
 class JobseekerViewSet(viewsets.ModelViewSet):
-    """
-    求职者信息
-    """
+    """求职者信息"""
     # 查询集
     queryset = Jobseeker.objects.all().order_by('id')
     # 序列化
     serializer_class = JobseekerSerializer
 class HRViewSet(viewsets.ModelViewSet):
-    """
-    HR信息
-    """
+    """HR信息"""
     # 查询集
     queryset = HR.objects.all().order_by('id')
     # 序列化
     serializer_class = HRSerializer
 class CompanyViewSet(viewsets.ModelViewSet):
-    """
-    公司信息
-    """
+    """公司信息"""
     # 查询集
     queryset = Company.objects.all().order_by('id')
     # 序列化
