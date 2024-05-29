@@ -20,7 +20,7 @@ from rest_framework_jwt.views import obtain_jwt_token
 from rest_framework.routers import DefaultRouter
 from job.views import JobListViewSet,ApplicationListViewSet,UpdateApplicationStatusView,CreateJobView
 from resume.views import ResumeView
-from user.views import JobseekerViewSet, HRViewSet, CompanyViewSet,UpdatePwdApi
+from user.views import JobseekerViewSet, HRViewSet, CompanyViewSet,UpdatePwdApi,RegisterViewSet
 
 router = DefaultRouter()
 
@@ -29,6 +29,7 @@ router.register(r'application', ApplicationListViewSet)
 router.register(r'jobseeker', JobseekerViewSet)
 router.register(r'hr', HRViewSet)
 router.register(r'company', CompanyViewSet)
+router.register(r'register', RegisterViewSet)
 
 
 urlpatterns = [
