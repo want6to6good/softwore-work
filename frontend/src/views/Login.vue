@@ -82,7 +82,7 @@
 									this.$store.commit("setUser", res.data.user)
 									this.$store.commit("setStudent", res.data.student)
 									this.$store.commit("setAuthorization", res.data.token)
-									this.$router.push('/exam')
+									this.$router.push('/job')
 								}
 							}).catch(function(error) {
 								//错误处理 相当于error

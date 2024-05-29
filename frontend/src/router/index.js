@@ -4,68 +4,110 @@ import Layout from '@/layout/index.vue'
 
 Vue.use(VueRouter)
 
-const routes = [{
-		path: '/',
-		component: Layout,
-		redirect: '/exam',
-		children: [{
-				path: 'exam',
-				component: () => import('../views/Exam.vue'),
-				name: 'exam',
-				meta: {
-					title: '考试中心'
-				}
-			},
-			{
-				path: 'practice',
-				name: 'Practice',
-				component: () => import('../views/Practice.vue'),
-				meta: {
-					title: '模拟练习'
-				}
-			},
-			{
-				path: 'grade',
-				name: 'Grade',
-				component: () => import('../views/Grade.vue'),
-				meta: {
-					title: '查询成绩'
-				}
-			},
-			{
-				path: 'center',
-				name: 'Center',
-				component: () => import('../views/Center.vue'),
-				meta: {
-					title: '个人中心'
-				}
-			},
-			{
-				path: 'password',
-				name: 'Password',
-				component: () => import('../views/Password.vue'),
-				meta: {
-					title: '修改密码'
-				}
-			},
-			{
-				path: 'paper',
-				name: 'Paper',
-				component: () => import('../views/Paper.vue'),
-				meta: {
-					title: '试卷详情'
-				}
-			},
-			{
-				path: 'score',
-				name: 'Score',
-				component: () => import('../views/Score.vue'),
-				meta: {
-					title: '考试得分'
-				}
-			}
-		]
-	},
+const routes = [
+	  {
+    path: '/',
+    component: Layout,
+    redirect: '/job',
+    children: [
+      {
+        path: 'job',
+        component: () => import('../views/Job/JobMain.vue'),
+        name: 'JobMain',
+        meta: {
+          title: '职位中心'
+        },
+        children: [
+          {
+            path: 'list',
+            name: 'JobList',
+            component: () => import('../views/Job/JobList.vue'),
+            meta: {
+              title: '职位列表'
+            }
+          },
+          {
+            path: 'details/:id',
+            name: 'JobDetails',
+            component: () => import('../views/Job/JobDetails.vue'),
+            meta: {
+              title: '职位详情'
+            }
+          },
+          {
+            path: 'apply',
+            name: 'JobApply',
+            component: () => import('../views/Job/JobApply.vue'),
+            meta: {
+              title: '申请职位'
+            }
+          }
+        ]
+      }
+    ]
+  },
+// 	{
+// 		path: '/',
+// 		component: Layout,
+// 		redirect: '/exam',
+// 		children: [{
+// 				path: 'exam',
+// 				component: () => import('../views/Exam.vue'),
+// 				name: 'exam',
+// 				meta: {
+// 					title: '考试中心'
+// 				}
+// 			},
+// 			{
+// 				path: 'practice',
+// 				name: 'Practice',
+// 				component: () => import('../views/Practice.vue'),
+// 				meta: {
+// 					title: '模拟练习'
+// 				}
+// 			},
+// 			{
+// 				path: 'grade',
+// 				name: 'Grade',
+// 				component: () => import('../views/Grade.vue'),
+// 				meta: {
+// 					title: '查询成绩'
+// 				}
+// 			},
+// 			{
+// 				path: 'center',
+// 				name: 'Center',
+// 				component: () => import('../views/Center.vue'),
+// 				meta: {
+// 					title: '个人中心'
+// 				}
+// 			},
+// 			{
+// 				path: 'password',
+// 				name: 'Password',
+// 				component: () => import('../views/Password.vue'),
+// 				meta: {
+// 					title: '修改密码'
+// 				}
+// 			},
+// 			{
+// 				path: 'paper',
+// 				name: 'Paper',
+// 				component: () => import('../views/Paper.vue'),
+// 				meta: {
+// 					title: '试卷详情'
+// 				}
+// 			},
+// 			{
+// 				path: 'score',
+// 				name: 'Score',
+// 				component: () => import('../views/Score.vue'),
+// 				meta: {
+// 					title: '考试得分'
+// 				}
+// 			}
+// 		]
+// },
 	{
 		path: '/answer',
 		name: 'Answer',
@@ -106,6 +148,14 @@ const routes = [{
 			title: '支付'
 		}
 	},
+	// {
+	// 	path: '/job',
+	// 	name: 'Job',
+	// 	component: () => import('../views/Job/JobMain.vue'),
+	// 	meta: {
+	// 		title: '职位中心'
+	// 	}
+	// },
 	{
 		path: '*',
 		name: 'Error',

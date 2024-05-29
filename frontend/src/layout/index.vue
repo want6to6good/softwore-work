@@ -6,10 +6,11 @@
 					<a href="/"><img src="../assets/logo.png" height="50px" /></a>
 					<el-menu :default-active="activeIndex" class="el-menu-title" mode="horizontal" @select="handleSelect"
 					 background-color="#ffffff" text-color="#85baef" active-text-color="#1884f2" :router="true">
-						<el-menu-item index="/exam">考试中心</el-menu-item>
-						<el-menu-item index="/practice">模拟练习</el-menu-item>
-						<el-menu-item index="/grade">查询成绩</el-menu-item>
-						<el-menu-item index="/mistake" disabled>错题本</a></el-menu-item>
+						<el-menu-item index="/exam">职位市场</el-menu-item>
+						<el-menu-item index="/practice">填写简历</el-menu-item>
+						<el-menu-item index="/grade">消息</el-menu-item>
+						<!-- <el-menu-item index="/mistake" disabled>模拟面试</a></el-menu-item> -->
+						<el-menu-item index="/mistake">模拟面试</a></el-menu-item>
 					</el-menu>
 					<el-dropdown>
 						<span class="el-dropdown-link" style="height: 50px;">
@@ -40,7 +41,7 @@
 				<router-view />
 			</el-main>
 			<el-footer>
-				<b>@Copyright 2019-2020. ALL Rights Reserved</b>
+				<b>@Copyright 2023-2024. ALL Rights Reserved</b>
 			</el-footer>
 		</el-container>
 	</div>
@@ -56,7 +57,7 @@
 		},
 		computed: {
 			getStudent() {
-				return this.$store.state.student;
+    			return this.$store.state.student || { name: 'TODO: Name' };
 			}
 		},
 		methods: {
