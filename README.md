@@ -28,7 +28,7 @@ python manage.py createsuperuser
 
 理论上版本差异问题不大, 但是如果之前没装过npm和node还是按以上版本装吧.
 
-进入`/frontend目录`, 运行`npm install`, 
+进入`/frontend`目录, 运行`npm install`, 
 
 可能会遇到https://registry.npm.taobao.org/ 过期的问题, 参考[这篇文章](https://juejin.cn/post/7336466381801324607)解决
 
@@ -65,7 +65,7 @@ Compiles and minifies for production:
 npm run build
 ```
 
-目前支持的路由:
+计划支持的路由:
 - update/: 用于更改简历投递状态, put请求, 参数: 
   - application_id: 职位申请的id
   - status: 申请状态, 以下三种:
