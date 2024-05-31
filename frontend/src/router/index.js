@@ -6,18 +6,17 @@ Vue.use(VueRouter)
 
 const routes = [
 	  {
-    path: '/',
+    path: '/job',
     component: Layout,
-    redirect: '/job',
     children: [
-      {
-        path: 'job',
-        component: () => import('../views/Job/JobMain.vue'),
-        name: 'JobMain',
-        meta: {
-          title: '职位中心'
-        },
-        children: [
+		{
+			path: '',
+			component: () => import('../views/Job/JobMain.vue'),
+			name: 'JobMain',
+			meta: {
+				title: '职位中心'
+			}
+		},
           {
             path: 'list',
             name: 'JobList',
@@ -42,10 +41,58 @@ const routes = [
               title: '申请职位'
             }
           }
-        ]
-      }
-    ]
-  },
+		]
+	},
+{
+  path: '/resume',
+  component: Layout,
+  children: [
+	  {
+		  path: '',
+		  component: () => import('../views/Resume/ResumeMain.vue'),
+		  name: 'ResumeMain',
+		  meta: {
+			  title: '简历中心'
+		  }
+	  },
+        {
+          path: 'view',
+          name: 'ResumeView',
+          component: () => import('../views/Resume/ResumeView.vue'),
+          meta: {
+            title: '查看简历'
+          }
+        }
+  ]
+},
+	{
+		path: '/message',
+		component: Layout,
+		children: [
+			{
+				path: '',
+				component: () => import('../views/Message/MessageMain.vue'),
+				name: 'MessageMain',
+				meta: {
+					title: '消息'
+				}
+			}
+		]
+	},
+	{
+		path: '/interview',
+		component: Layout,
+		children: [
+			{
+				path: '',
+				component: () => import('../views/Interview/InterviewMain.vue'),
+				name: 'InterviewMain',
+				meta: {
+					title: '模拟面试'
+				}
+			}
+		]
+	},
 // 	{
 // 		path: '/',
 // 		component: Layout,
@@ -148,14 +195,6 @@ const routes = [
 			title: '支付'
 		}
 	},
-	// {
-	// 	path: '/job',
-	// 	name: 'Job',
-	// 	component: () => import('../views/Job/JobMain.vue'),
-	// 	meta: {
-	// 		title: '职位中心'
-	// 	}
-	// },
 	{
 		path: '*',
 		name: 'Error',

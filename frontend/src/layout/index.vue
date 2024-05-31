@@ -6,11 +6,11 @@
 					<a href="/"><img src="../assets/logo.png" height="50px" /></a>
 					<el-menu :default-active="activeIndex" class="el-menu-title" mode="horizontal" @select="handleSelect"
 					 background-color="#ffffff" text-color="#85baef" active-text-color="#1884f2" :router="true">
-						<el-menu-item index="/exam">职位市场</el-menu-item>
-						<el-menu-item index="/practice">填写简历</el-menu-item>
-						<el-menu-item index="/grade">消息</el-menu-item>
+						<el-menu-item index="/job">职位市场</el-menu-item>
+						<el-menu-item index="/resume">简历</el-menu-item>
+						<el-menu-item index="/message">消息</el-menu-item>
 						<!-- <el-menu-item index="/mistake" disabled>模拟面试</a></el-menu-item> -->
-						<el-menu-item index="/mistake">模拟面试</a></el-menu-item>
+						<el-menu-item index="/interview">模拟面试</a></el-menu-item>
 					</el-menu>
 					<el-dropdown>
 						<span class="el-dropdown-link" style="height: 50px;">
@@ -89,45 +89,48 @@
 
 		}
 	}
+
 </script>
 
 <style lang="scss" scoped>
-	#layout {
-		margin: 0px 150px;
-		width: 1200px;
-	}
+#layout {
+  max-width: 1200px; // 最大宽度
+  width: 100%; // 宽度设置为100%，允许在小屏幕上自动调整大小
+  margin: 0 auto; // 水平居中
+  padding: 0 20px; // 增加一些内边距保证内容不会紧贴屏幕边缘
 
-	.el-header {
-		border-bottom: solid 1px #e6e6e6 !important;
-	}
+  .el-header {
+    border-bottom: 1px solid #e6e6e6;
+  }
 
-	.el-main {
-		height: auto;
-		min-height: 580px;
-		_height: 580px;
-	}
+  .el-main {
+    min-height: 100%; // 保持最小高度
+  }
 
-	.el-footer {}
+  .el-footer {
+    // 如有需要，这里也可以添加样式
+  }
 
-	.el-dropdown img {
-		margin-top: 10px;
-	}
+  .el-dropdown img {
+    margin-top: 10px; // 调整图片的上边距，适用于下拉菜单中的头像或其他图标
+  }
 
-	.el-menu-item {
-		font-size: 18px;
-	}
+  .el-menu-item {
+    font-size: 18px; // 调整菜单项字体大小，保持清晰可读
+  }
 
-	.el-dropdown {
-		margin-top: 10px;
-	}
+  .el-dropdown {
+    margin-top: 10px; // 下拉菜单顶部的外边距
+  }
 
-	.el-dropdown-link {
-		cursor: pointer;
-		color: #909090;
-		font-size: 18px;
-	}
+  .el-dropdown-link {
+    cursor: pointer; // 确保鼠标悬停时显示指针
+    color: #909090; // 字体颜色
+    font-size: 18px; // 字体大小
+  }
 
-	.el-icon-arrow-down {
-		font-size: 18px;
-	}
+  .el-icon-arrow-down {
+    font-size: 18px; // 箭头图标的大小，与菜单字体大小一致
+  }
+}
 </style>

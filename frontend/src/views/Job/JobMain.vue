@@ -9,7 +9,7 @@
 			</el-col>
 		</el-row>
 		<el-row>
-			<h3 style="border-left: solid 10px rgb(220, 208, 65);">职位列表</h3>
+			<h1 style="border-left: solid 10px rgb(220, 208, 65);">职位列表</h1>
 			<div style="padding-left: 15px">
 				<el-col :span="4" v-for="(item, index) in pagination.results" :key="index" :offset="index > 0 ? 1 : 0">
 					<el-card :body-style="{ padding: '0px' }" v-loading="loading">
@@ -59,7 +59,7 @@ export default {
 				params: {
 					page: this.page,
 					page_size: this.page_size,
-					student_id: this.$store.state.student.id,
+					// student_id: this.$store.state.student.id,
 				}
 			}).then(res => {
 				this.pagination = res.data
@@ -111,6 +111,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    #job {
+        margin-top: 10px;
+        display: flex; // 设置为flex布局
+        // align-items: center; // 子元素水平居中
+
+        flex-direction: column; // 子元素垂直排列
+    }
+    
 	.bottom {
 		margin-top: 13px;
 		line-height: 12px;
