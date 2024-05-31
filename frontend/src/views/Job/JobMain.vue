@@ -9,11 +9,11 @@
 			</el-col>
 		</el-row>
 		<el-row>
-			<h1 style="border-left: solid 10px rgb(220, 208, 65);">职位列表</h1>
+			<!-- <h1 style="border-left: 5px solid #409EFF ">职位列表</h1> -->
+			<h1>职位列表</h1>
 			<div style="padding-left: 15px">
 				<el-col :span="4" v-for="(item, index) in pagination.results" :key="index" :offset="index > 0 ? 1 : 0">
 					<el-card :body-style="{ padding: '0px' }" v-loading="loading">
-						<!-- <img src="@/assets/job.png" class="image"> -->
 						<div style="padding: 14px;">
 							<span>{{ item.title }}</span>
 							<p>
@@ -43,10 +43,14 @@ export default {
 			page: 1,
 			page_size: 5,
 			pagination: {
-				count: null,
+				count: 3,  // 假设有3个默认职位
 				next: null,
 				previous: null,
-				results: []
+				results: [
+					{ title: '软件工程师', post_date: '2024-05-30', location: '北京' },
+					{ title: '数据分析师', post_date: '2024-05-28', location: '上海' },
+					{ title: '产品经理', post_date: '2024-05-25', location: '广州' }
+				]
 			}
 		}
 	},
@@ -104,8 +108,10 @@ export default {
 		}
 	},
 	created() {
-		this.getJobInfo()
-		this.loading = true
+		this.loading = true  // 初始化时显示正在加载
+		setTimeout(() => {  // 假设加载是异步的，这里用 setTimeout 模拟异步加载结束
+			this.loading = false
+		}, 1000);
 	}
 }
 </script>

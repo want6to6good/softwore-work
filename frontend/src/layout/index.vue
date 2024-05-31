@@ -3,7 +3,7 @@
 		<el-container>
 			<el-header>
 				<el-row type="flex" justify="space-between">
-					<a href="/"><img src="../assets/logo.png" height="50px" /></a>
+					<a href="/"><img src="@/assets/logo.png" height="50px" /></a>
 					<el-menu :default-active="activeIndex" class="el-menu-title" mode="horizontal" @select="handleSelect"
 					 background-color="#ffffff" text-color="#85baef" active-text-color="#1884f2" :router="true">
 						<el-menu-item index="/job">职位市场</el-menu-item>
@@ -15,7 +15,6 @@
 					<el-dropdown>
 						<span class="el-dropdown-link" style="height: 50px;">
 							<el-row>
-								<!-- <img src="../assets/avatar.png" height="35px" /> -->
 								<span>
 									<i class="el-icon-user-solid"></i>
 									<span>{{getStudent.name}}</span>
