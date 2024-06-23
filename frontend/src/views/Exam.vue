@@ -23,9 +23,6 @@
 								<span>考试时长：{{item.total_time}}分钟</span>
 							</p>
 							<div class="bottom clearfix">
-								<!-- <router-link target="_blank" :to="{path:'/answer',query:{exam: pagination.results[index],paper:item.paper}}">
-									<el-button type="text" class="button">开始做题</el-button>
-								</router-link> -->
 								<el-button type="text" class="button" @click="toAnswer(index)">报名</el-button>
 							</div>
 						</div>

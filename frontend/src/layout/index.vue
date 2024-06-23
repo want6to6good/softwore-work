@@ -56,7 +56,8 @@
 		},
 		computed: {
 			getStudent() {
-    			return this.$store.state.user || { name: 'TODO: Name' };
+				console.log(this.$store.state.user.username)
+    			return {name: this.$store.state.user.username} || { name: 'Default name' };
 			}
 		},
 		methods: {

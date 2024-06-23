@@ -4,7 +4,7 @@
     <div class="resume-info">
       <el-avatar :src="resumeData.portrait" size="large"></el-avatar>
       <div><label>姓名：</label>{{ resumeData.name }}</div>
-      <div><label>生日：</label>{{ resumeData.birth }}</div>
+      <div><label>性别：</label>{{ resumeData.sex }}</div>
       <div><label>教育经历：</label>{{ resumeData.education }}</div>
       <div><label>工作经历：</label>{{ resumeData.experience }}</div>
       <div><label>技能：</label>{{ resumeData.skills }}</div>
@@ -29,7 +29,7 @@ export default {
       resumeData: {
         portrait: 'path/to/image.jpg', // Placeholder for image path
         name: '张三',
-        birth: '1990-01-01',
+        sex: '男',
         education: '某大学计算机科学与技术学院，本科，2012 - 2016',
         experience: '软件开发工程师，某科技公司，2016至今。负责公司产品后端开发与维护。',
         skills: '熟练使用Java, Python, JavaScript等编程语言；掌握Spring, Django, Vue.js框架。',

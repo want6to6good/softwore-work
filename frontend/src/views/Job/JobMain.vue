@@ -12,17 +12,17 @@
 			<!-- <h1 style="border-left: 5px solid #409EFF ">职位列表</h1> -->
 			<h1>职位列表</h1>
 			<div style="padding-left: 15px">
-				<el-col :span="4" v-for="(item, index) in pagination.results" :key="index" :offset="index > 0 ? 1 : 0">
+				<el-col :span="5" v-for="(item, index) in pagination.results" :key="index" :offset="index > 0 ? 1 : 0">
 					<el-card :body-style="{ padding: '0px' }" v-loading="loading">
 						<div style="padding: 14px;">
-							<span>{{ item.title }}</span>
-							<p>
-								<span>发布日期：{{ item.post_date }}</span>
-								<br />
-								<span>地点：{{ item.location }}</span>
-							</p>
+							<span>职位：{{ item.title }}</span>
+							<p>描述：{{ item.description }}</p> <!-- 添加工作描述 -->
+							<p>公司 ID：{{ item.id }}</p> <!-- 添加公司 ID -->
+							<p>发布日期：{{ item.posted_date }}</p> <!-- 调整字段名以匹配新的数据结构 -->
+							<p>地点：{{ item.location }}</p>
+							<p>薪资：{{ item.salary }}</p> <!-- 添加薪资信息 -->
 							<div class="bottom clearfix">
-								<el-button type="text" class="button" @click="applyToJob(index)">报名</el-button>
+								<el-button type="text" class="button" @click="applyToJob(index)">申请</el-button>
 							</div>
 						</div>
 					</el-card>
@@ -37,20 +37,32 @@
 import Pagination from '@/components/Pagination.vue'
 export default {
 	data() {
+		//return {
+		//	loading: false,
+		//	key: null,
+		//	page: 1,
+		//	page_size: 5,
+		//	pagination: {
+		//		count: 3,  // 假设有3个默认职位
+		//		next: null,
+		//		previous: null,
+		//		results: [
+		//			{ title: '软件工程师', post_date: '2024-05-30', location: '北京' },
+		//			{ title: '数据分析师', post_date: '2024-05-28', location: '上海' },
+		//			{ title: '产品经理', post_date: '2024-05-25', location: '广州' }
+		//		]
+		//	}
+		//}
 		return {
 			loading: false,
 			key: null,
 			page: 1,
 			page_size: 5,
 			pagination: {
-				count: 3,  // 假设有3个默认职位
+				count: null,
 				next: null,
 				previous: null,
-				results: [
-					{ title: '软件工程师', post_date: '2024-05-30', location: '北京' },
-					{ title: '数据分析师', post_date: '2024-05-28', location: '上海' },
-					{ title: '产品经理', post_date: '2024-05-25', location: '广州' }
-				]
+				results: []
 			}
 		}
 	},
@@ -59,18 +71,22 @@ export default {
 	},
 	methods: {
 		getJobInfo() {
-			this.$axios(`/api/jobs/?format=json`, {
+			console.log(this.page)
+			console.log(this.page_size)
+
+			this.$axios(`/api/job/?format=json`, {
 				params: {
 					page: this.page,
 					page_size: this.page_size,
-					// student_id: this.$store.state.user.id,
 				}
 			}).then(res => {
-				this.pagination = res.data
-				this.loading = false
+				console.log(res.data);
+				this.pagination.results = res.data;
+				this.loading = false;
 			}).catch(error => {
-				console.log(error)
-			})
+				console.log(error);
+				this.loading = false;
+			});
 		},
 		handleSizeChange(val) {
 			this.page_size = val
@@ -82,12 +98,12 @@ export default {
 		},
 		searchJob() {
 			if (this.key) {
-				this.$axios(`/api/jobs/?format=json`, {
+				this.$axios(`/api/job/?format=json`, {
 					params: {
 						page: this.page,
 						page_size: this.page_size,
 						search: this.key,
-						student_id: this.$store.state.user.id,
+						// student_id: this.$store.state.user.id,
 					}
 				}).then(res => {
 					if (res.status == 200) {
@@ -108,7 +124,8 @@ export default {
 		}
 	},
 	created() {
-		this.loading = true  // 初始化时显示正在加载
+		this.loading = true;
+	    this.getJobInfo();  // 调用获取职位信息的方法
 		setTimeout(() => {  // 假设加载是异步的，这里用 setTimeout 模拟异步加载结束
 			this.loading = false
 		}, 1000);

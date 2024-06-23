@@ -5,8 +5,8 @@
       <el-form-item label="姓名">
         <el-input v-model="resumeData.name"></el-input>
       </el-form-item>
-      <el-form-item label="生日">
-        <el-input v-model="resumeData.birth"></el-input>
+      <el-form-item label="性别">
+        <el-input v-model="resumeData.sex"></el-input>
       </el-form-item>
       <el-form-item label="教育经历">
         <el-input v-model="resumeData.education" type="textarea"></el-input>
@@ -35,26 +35,37 @@
 export default {
   name: 'ResumeView',
   data() {
+    console.log(this.$store.state.user)
+
     return {
       resumeData: {
+        // id: this.$store.state.user.id,
         // Include initial data similar to ResumeMain for demonstration
         portrait: 'path/to/image.jpg',
         name: '张三',
-        birth: '1990-01-01',
+        sex: '男',
         education: '某大学计算机科学与技术学院，本科，2012 - 2016',
         experience: '软件开发工程师，某科技公司，2016至今。负责公司产品后端开发与维护。',
         skills: '熟练使用Java, Python, JavaScript等编程语言；掌握Spring, Django, Vue.js框架。',
         projects: '在线教育平台 - 主导后端开发和系统架构设计。',
-        certifications: 'Oracle Certified Java Programmer, 2018'
+        certifications: 'Oracle Certified Java Programmer, 2018',
+        username: this.$store.state.user.username
       }
     }
   },
   methods: {
     submitChanges() {
-      // Here you would typically send the changes to the server
-      console.log('Submitted:', this.resumeData);
-      this.$message.success('修改已提交!');
-    },
+      console.log(this.resumeData)
+       axios.post('/api/change_resume', this.resumeData)
+    .then(response => {
+      console.log('Response:', response);
+      this.$message.success('修改已提交成功!');
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      this.$message.error('提交失败，请检查网络或联系管理员!');
+    });
+},
     returnToMain() {
       this.$router.push({ name: 'ResumeMain' });
     }
