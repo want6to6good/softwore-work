@@ -23,9 +23,9 @@
 							</el-row>
 						</span>
 						<el-dropdown-menu slot="dropdown">
-							<el-dropdown-item>
+							<!-- <el-dropdown-item>
 								<el-button type="text" @click="toCenter">个人中心</el-button>
-							</el-dropdown-item>
+							</el-dropdown-item> -->
 							<el-dropdown-item>
 								<el-button type="text" @click="toUpdatePwd">修改密码</el-button>
 							</el-dropdown-item>
@@ -56,7 +56,7 @@
 		},
 		computed: {
 			getStudent() {
-    			return this.$store.state.student || { name: 'TODO: Name' };
+    			return this.$store.state.user || { name: 'TODO: Name' };
 			}
 		},
 		methods: {

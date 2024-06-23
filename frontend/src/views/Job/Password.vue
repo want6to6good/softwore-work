@@ -97,6 +97,8 @@
 		},
 		methods: {
 			updatePwd(formName) {
+				console.log(this.pwdForm)
+				console.log(formName)
 				this.$refs[formName].validate((valide) => {
 					if (valide) {
 						this.$axios.patch(
@@ -124,11 +126,13 @@
 				});
 			},
 			cancel() {
-				this.$router.push('/')
+				this.$router.push('/job')
 			}
 		},
 		created() {
-			this.pwdForm.userid = this.$route.params.student.user
+			// console.log(this.$store.state.user.id)
+			// this.pwdForm.userid = this.$route.params.student.user
+			this.pwdForm.userid = this.$store.state.user.id
 		}
 	}
 </script>

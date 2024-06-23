@@ -181,7 +181,7 @@
 				return this.choices.length + this.fills.length + this.judges.length + this.subjective.length;
 			},
 			getStudent() {
-				return this.$store.state.student;
+				return this.$store.state.user;
 			},
 			getUser() {
 				return this.$store.state.user;

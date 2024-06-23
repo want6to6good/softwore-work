@@ -3,12 +3,24 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+function getSafeSessionStorage(key) {
+	console.log(sessionStorage)
+	const item = sessionStorage.getItem(key);
+	console.log(key, item)
+  try {
+    return item ? JSON.parse(item) : null;
+  } catch (error) {
+    console.error(`Error parsing sessionStorage item "${key}":`, error);
+    return null;
+  }
+}
+
 export default new Vuex.Store({
   state: {
-	  user: sessionStorage.getItem('user') ? JSON.parse(sessionStorage.getItem('user')) : {},
-	  student: sessionStorage.getItem('student') ? JSON.parse(sessionStorage.getItem('student')) : {},
-	  Authorization: sessionStorage.getItem('Authorization') ? sessionStorage.getItem('Authorization') : '',
-	  isPractice: sessionStorage.getItem('isPractice') ? sessionStorage.getItem('isPractice') : false
+    user: getSafeSessionStorage('user') || {},
+    // student: getSafeSessionStorage('student') || {},
+    Authorization: sessionStorage.getItem('Authorization') || '',
+    // isPractice: sessionStorage.getItem('isPractice') || false
   },
   mutations: {
 	  setUser(state, value) {

@@ -88,7 +88,7 @@
 				//用localStorage存储考试信息和试卷信息
 				axios.post(`api/practices/`, {
 					name: '模拟练习',
-					student_id: this.$store.state.student.id,
+					student_id: this.$store.state.user.id,
 				}).then(res => {
 					console.log(res.data); //处理成功的函数 相当于success
 					this.practice = res.data;
@@ -112,7 +112,7 @@
 					params: {
 						page: this.page,
 						page_size: this.page_size,
-						student_id: this.$store.state.student.id,
+						student_id: this.$store.state.user.id,
 					}
 				}).then(res => {
 					this.pagination = res.data

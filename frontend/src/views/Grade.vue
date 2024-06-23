@@ -77,7 +77,7 @@
 					params: {
 						page: this.page,
 						page_size: this.page_size,
-						student_id: this.$store.state.student.id,
+						student_id: this.$store.state.user.id,
 					}
 				}).then(res => {
 					this.pagination = res.data

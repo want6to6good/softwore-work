@@ -67,6 +67,7 @@ class RegisterViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
 class UpdatePwdApi(APIView):
     """修改用户密码"""
     def patch(self, request):
+        
         # 获取参数
         old_pwd = request.data['oldpwd']
         new_pwd = request.data['newpwd']

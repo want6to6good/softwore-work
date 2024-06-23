@@ -40,7 +40,23 @@ const routes = [
             meta: {
               title: '申请职位'
             }
-          }
+		  },
+			// {
+			// 	path: 'center',
+			// 	name: 'Center',
+			// 	component: () => import('../views/Job/Center.vue'),
+			// 	meta: {
+			// 		title: '个人中心'
+			// 	}
+			// },
+			{
+				path: 'password',
+				name: 'Password',
+				component: () => import('../views/Job/Password.vue'),
+				meta: {
+					title: '修改密码'
+				}
+			},
 		]
 	},
 {
