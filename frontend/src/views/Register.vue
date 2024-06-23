@@ -7,28 +7,26 @@
 			<el-main>
 				<div id="register-from">
 					<el-form ref="registerForm" status-icon :model="registerForm" :rules="rules">
-                        <el-form-item label="角色选择" prop="role" required>
-							<br>
+                        <el-form-item label="角色选择" prop="role">
                             <el-radio-group v-model="registerForm.role">
                                 <el-radio label="hr">我是HR</el-radio>
                                 <el-radio label="jobseeker">我是求职者</el-radio>
                             </el-radio-group>
                         </el-form-item>
+                        <el-form-item label="公司名称" prop="company" required v-if="registerForm.role === 'hr'">
+                            <el-input v-model="registerForm.company" autocomplete="off"></el-input>
+                        </el-form-item>
 						<el-form-item label="用户名/邮箱/手机号" prop="username">
 							<el-input v-model="registerForm.username" autocomplete="off"></el-input>
-							</el-input>
 						</el-form-item>
 						<el-form-item label="姓名" prop="name">
 							<el-input v-model="registerForm.name" autocomplete="off"></el-input>
-							</el-input>
 						</el-form-item>
 						<el-form-item label="密码" prop="password">
 							<el-input type="password" v-model="registerForm.password" autocomplete="off"></el-input>
-							</el-input>
 						</el-form-item>
 						<el-form-item label="确认密码" prop="checkpwd">
 							<el-input type="password" v-model="registerForm.checkpwd" autocomplete="off"></el-input>
-							</el-input>
 						</el-form-item>
 						<slide-verification @check-result="checkResult"></slide-verification>
 						<br />
@@ -76,7 +74,8 @@
 					password: null,
 					checkpwd: null,
 					name: null,
-					role: '',
+            		role: 'jobseeker',  // Default to job seeker
+					company: null  // This will be used if the role is 'hr'
 				},
 				rules: {
 					username: [{
@@ -200,7 +199,7 @@
 
     #register-from {
         width: 400px;
-        height: 700px;
+        height: 720px;
         border-radius: 10px;
         margin: auto; // 设置上下为自动，左右自动计算以居中
         display: flex; // 使用 flex 布局
@@ -224,7 +223,7 @@
 	.el-input {}
 
     .el-button {
-        margin-top: 20px; // 为按钮添加上边距
+        margin-top: 10px; // 为按钮添加上边距
         height: 40px; // 设置按钮高度
         background-color: #409EFF; // 设置按钮颜色
         color: white;

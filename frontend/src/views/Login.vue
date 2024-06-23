@@ -44,7 +44,7 @@
 				rules: {
 					username: [{
 						required: true,
-						message: '请输入学号',
+						message: '请输入用户名/邮箱/手机号',
 						trigger: 'blur'
 					}],
 					password: [{
