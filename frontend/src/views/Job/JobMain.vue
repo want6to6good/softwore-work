@@ -9,15 +9,14 @@
 			</el-col>
 		</el-row>
 		<el-row>
-			<!-- <h1 style="border-left: 5px solid #409EFF ">职位列表</h1> -->
 			<h1>职位列表</h1>
-			<div style="padding-left: 15px">
-				<el-col :span="5" v-for="(item, index) in pagination.results" :key="index" :offset="index > 0 ? 1 : 0">
+			<div style="padding-left: 0px">
+				<el-col :span="4" v-for="(item, index) in pagination.results" :key="index" :offset="index > 0 ? 1 : 0">
 					<el-card :body-style="{ padding: '0px' }" v-loading="loading">
 						<div style="padding: 14px;">
 							<span>职位：{{ item.title }}</span>
 							<p>描述：{{ item.description }}</p> <!-- 添加工作描述 -->
-							<p>公司 ID：{{ item.id }}</p> <!-- 添加公司 ID -->
+							<p>公司：{{ item.company_name }}</p> <!-- 添加公司 ID -->
 							<p>发布日期：{{ item.posted_date }}</p> <!-- 调整字段名以匹配新的数据结构 -->
 							<p>地点：{{ item.location }}</p>
 							<p>薪资：{{ item.salary }}</p> <!-- 添加薪资信息 -->
@@ -37,22 +36,6 @@
 import Pagination from '@/components/Pagination.vue'
 export default {
 	data() {
-		//return {
-		//	loading: false,
-		//	key: null,
-		//	page: 1,
-		//	page_size: 5,
-		//	pagination: {
-		//		count: 3,  // 假设有3个默认职位
-		//		next: null,
-		//		previous: null,
-		//		results: [
-		//			{ title: '软件工程师', post_date: '2024-05-30', location: '北京' },
-		//			{ title: '数据分析师', post_date: '2024-05-28', location: '上海' },
-		//			{ title: '产品经理', post_date: '2024-05-25', location: '广州' }
-		//		]
-		//	}
-		//}
 		return {
 			loading: false,
 			key: null,
@@ -68,6 +51,11 @@ export default {
 	},
 	components: {
 		Pagination
+	},
+	computed: {
+		username() {
+			return this.$store.state.user.username;
+		}
 	},
 	methods: {
 		getJobInfo() {
@@ -117,11 +105,25 @@ export default {
 		applyToJob(index) {
 			localStorage.removeItem('job');
 			localStorage.setItem("job", JSON.stringify(this.pagination.results[index]));
-			this.$router.push({
-				path: '/Pay',
-				query: {}
-			})
-		}
+			
+			const job = this.pagination.results[index];
+			const jobname = job.title;
+			const username = this.username;
+
+			this.$axios(`/api/application_create/?format=json`, {
+				params: {
+					jobname: jobname,
+					username: username
+				}
+			}).then(response => {
+					this.$message.success('Application submitted successfully!');
+					console.log(response.data);
+				})
+				.catch(error => {
+					this.$message.error('Failed to submit application.');
+					console.error(error);
+				});
+			}
 	},
 	created() {
 		this.loading = true;
@@ -132,6 +134,11 @@ export default {
 	}
 }
 </script>
+
+
+
+
+
 
 <style lang="scss" scoped>
     #job {
