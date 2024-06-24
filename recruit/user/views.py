@@ -3,6 +3,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from django.db.models import Q
 from rest_framework import viewsets, mixins, status
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -88,6 +89,18 @@ class JobseekerViewSet(viewsets.ModelViewSet):
     queryset = Jobseeker.objects.all().order_by('id')
     # 序列化
     serializer_class = JobseekerSerializer
+    @action(detail=False, methods=['put'])
+    def get_personal_info(self, request):
+        username = request.data.get('username', None)
+        if username is not None:
+            try:
+                jobseeker = Jobseeker.objects.get(name=username)
+                serializer = self.get_serializer(jobseeker)
+                return Response(serializer.data)
+            except Jobseeker.DoesNotExist:
+                return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({"detail": "Username parameter is required."}, status=status.HTTP_400_BAD_REQUEST)
 class HRViewSet(viewsets.ModelViewSet):
     """HR信息"""
     # 查询集

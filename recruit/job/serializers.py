@@ -4,9 +4,13 @@ from .models import Job,Application
 from user.serializers import JobseekerSerializer
 from user.models import Jobseeker
 class JobSerializer(serializers.ModelSerializer):
+    company_name = serializers.SerializerMethodField()
+
     class Meta:
         model = Job
-        fields = '__all__'
+        fields = ['title', 'description', 'requirements', 'company_name', 'location', 'posted_date', 'salary']
+    def get_company_name(self, obj):
+        return obj.company.name
 class ApplicationSerializer(serializers.ModelSerializer):
     job = JobSerializer(read_only=True)
     jobseeker = JobseekerSerializer(read_only=True)

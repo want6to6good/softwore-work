@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import mixins, viewsets
 from .models import Job,Application
-from user.models import Company
+from user.models import Company,Jobseeker
 from .serializers import JobSerializer,ApplicationSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -91,4 +91,18 @@ class CreateJobView(APIView):
         )
 
         return Response({"detail": "工作岗位创建成功", "job_id": job.id}, status=status.HTTP_201_CREATED)
+class CreateApplicationView(APIView):
+    def post(self, request, *args, **kwargs):
+        name = request.data.get('username')
+        job = request.data.get('jobname')
+        # 校验必填字段
+        if not all([name,job]):
+            return Response({"detail": "所有字段都是必填的"}, status=status.HTTP_400_BAD_REQUEST)
+        seeker=Jobseeker.objects.get(name=name)
+        job=job.objects.get(title=job)
+        application = Application.objects.create(
+            job=job,
+            jobseeker=seeker
+        )
+        return Response({"detail": "简历投递成功"}, status=status.HTTP_201_CREATED)
 # Create your views here.

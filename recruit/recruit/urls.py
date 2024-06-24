@@ -18,15 +18,18 @@ from django.contrib import admin
 from django.urls import path,include, re_path
 from rest_framework_jwt.views import obtain_jwt_token
 from rest_framework.routers import DefaultRouter
-from job.views import JobListViewSet,ApplicationListViewSet,UpdateApplicationStatusView,CreateJobView
-from resume.views import ResumeView
+from job.views import JobListViewSet, ApplicationListViewSet, UpdateApplicationStatusView, CreateJobView, \
+    CreateApplicationView
+from resume.views import ResumeView,ResumeListViewSet
 from user.views import JobseekerViewSet, HRViewSet, CompanyViewSet,UpdatePwdApi,RegisterViewSet
 
 router = DefaultRouter()
 
 router.register(r'job', JobListViewSet)
 router.register(r'application', ApplicationListViewSet)
-router.register(r'jobseeker', JobseekerViewSet)
+router.register(r'application_create', CreateApplicationView)
+router.register(r'get_personal_info', JobseekerViewSet)
+router.register(r'get_resume',ResumeListViewSet)
 router.register(r'hr', HRViewSet)
 router.register(r'company', CompanyViewSet)
 router.register(r'register', RegisterViewSet)
