@@ -6,7 +6,7 @@ from rest_framework import viewsets, mixins, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
+from django.shortcuts import get_object_or_404
 from user.models import Jobseeker, Company,HR
 from user.serializers import JobseekerSerializer, UserDetailSerializer, CompanySerializer, HRSerializer
 # Create your views here.
@@ -68,7 +68,6 @@ class RegisterViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
 class UpdatePwdApi(APIView):
     """修改用户密码"""
     def patch(self, request):
-        
         # 获取参数
         old_pwd = request.data['oldpwd']
         new_pwd = request.data['newpwd']
@@ -94,7 +93,8 @@ class JobseekerViewSet(viewsets.ModelViewSet):
         username = request.data.get('username', None)
         if username is not None:
             try:
-                jobseeker = Jobseeker.objects.get(name=username)
+                user = get_object_or_404(User, username=username)
+                jobseeker = Jobseeker.objects.get(user=user)
                 serializer = self.get_serializer(jobseeker)
                 return Response(serializer.data)
             except Jobseeker.DoesNotExist:

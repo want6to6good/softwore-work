@@ -66,6 +66,35 @@ npm run build
 ```
 
 计划支持的路由:
+- choices/:选择题
+- fills/:填空题
+- judges/:判断题
+- subjective/:主观题
+- job/: 返回工作列表，参数可有可无:
+ - company_name:公司名称
+ - location:公司位置
+ - min_salary:最低薪资
+ - max_salary:最高薪资
+- application/: 返回职位申请列表，参数可有可无：
+ - job_name: 工作名称
+ - jobseeker_name:求职者姓名
+- application_create/:创建职位申请，post请求，参数：
+ - username:用户名
+ - jobname工作名
+- get_personal_info/:查询指定用户信息，put请求，参数：
+ - username:用户名
+- get_personal_info/:查询所有用户信息
+- get_resume/:获取职位申请列表，put请求，参数：
+ - username:用户名
+- hr/: 查询所有hr信息
+- company/: 查询所有公司信息
+- register/:注册
+- xadmin/:后台管理系统
+- jwt-auth/:令牌管理
+- update-pwd/:更新密码，参数：
+ - oldpwd:旧密码
+ - newpwd:新密码
+ - userid:用户id
 - update/: 用于更改简历投递状态, put请求, 参数: 
   - application_id: 职位申请的id
   - status: 申请状态, 以下三种:
@@ -79,18 +108,21 @@ npm run build
   - loaction: 工作地点
   - salary: 薪资
 - change_resume/: 更改简历, post请求, 参数: 
-  - jobseeker_id: 求职者id 
+  - name: 用户名
+  - sex:性别
   - education:教育经历 
   - experience: 工作经历 
   - skills: 技能 
   - projects: 项目经历 
   - certifications: 认证和证书
-- job/: 返回工作列表 (返回的参数同update, 但是多了一个posted_date: 发布日期) 
-- application/: (带参数job_id或jobseeker_id, hr查看带job_id,求职者查看带jobseeker_id)返回参数 job, jobseeker, applied_date, status
-返回求职者 or hr or 公司数据 (应该用不到) 
-- jobseeker/
-- hr/
-- company/
+- create_message/:创建消息,post请求,参数：
+  - sender_name: 发送者username
+  - receiver_name: 接收者username
+  - content: 消息内容
+- get_message/: 获取消息,put请求，参数:
+ - username: 用户名
+- markread/: 标记为已读,post请求,参数:
+ - message_id:消息id
 
 一个笔记: 我们项目中可以登录的 (存储在db.sqlite3中)
 - 后端, 帐号: wanghao, 密码: 123456

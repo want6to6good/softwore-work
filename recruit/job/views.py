@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import mixins, viewsets
 from rest_framework.decorators import action
-
+from django.contrib.auth.models import User
 from .models import Job,Application
 from user.models import Company,Jobseeker
 from .serializers import JobSerializer,ApplicationSerializer
@@ -19,15 +19,15 @@ class JobListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     # 重写queryset
     def get_queryset(self):
         # 获取查询参数
-        company_id = self.request.query_params.get("company_id")
+        company_name = self.request.query_params.get("company_name")
         location = self.request.query_params.get("location")
         min_salary = self.request.query_params.get("min_salary")
         max_salary = self.request.query_params.get("max_salary")
         # 初始查询集
         queryset = Job.objects.all()
         # 过滤公司
-        if company_id:
-            queryset = queryset.filter(company_id=company_id)
+        if company_name:
+            queryset = queryset.filter(company_name=company_name)
         # 过滤工作地点
         if location:
             queryset = queryset.filter(location=location)
@@ -45,16 +45,16 @@ class ApplicationListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     serializer_class = ApplicationSerializer
     def get_queryset(self):
         # 获取查询参数
-        job_id = self.request.query_params.get("job_id")
-        jobseeker_id = self.request.query_params.get("jobseeker_id")
+        job_name = self.request.query_params.get("job_name")
+        jobseeker_name = self.request.query_params.get("jobseeker_name")
         # 初始查询集
         queryset = Application.objects.all()
         # 过滤职位
-        if job_id:
-            queryset = queryset.filter(job_id=job_id)
+        if job_name:
+            queryset = queryset.filter(job__title=job_name)
         # 过滤求职者
-        if jobseeker_id:
-            queryset = queryset.filter(jobseeker_id=jobseeker_id)
+        if jobseeker_name:
+            queryset = queryset.filter(jobseeker__name=jobseeker_name)
         return queryset
 class UpdateApplicationStatusView(APIView):
     """更新职位申请状态"""
@@ -76,13 +76,13 @@ class CreateJobView(APIView):
         title = request.data.get('title')
         description = request.data.get('description')
         requirements = request.data.get('requirements')
-        company_id = request.data.get('company_id')
+        company_name= request.data.get('company_name')
         location = request.data.get('location')
         salary = request.data.get('salary')
         # 校验必填字段
-        if not all([title, description, requirements, company_id, location, salary]):
+        if not all([title, description, requirements, company_name, location, salary]):
             return Response({"detail": "所有字段都是必填的"}, status=status.HTTP_400_BAD_REQUEST)
-        company = get_object_or_404(Company, id=company_id)
+        company = get_object_or_404(Company, name=company_name)
         job = Job.objects.create(
             title=title,
             description=description,
@@ -103,7 +103,8 @@ class CreateApplicationView(mixins.ListModelMixin, viewsets.GenericViewSet):
         # 校验必填字段
         if not all([name,job]):
             return Response({"detail": "所有字段都是必填的"}, status=status.HTTP_400_BAD_REQUEST)
-        seeker=Jobseeker.objects.get(name=name)
+        user = get_object_or_404(User, username=name)
+        seeker = Jobseeker.objects.get(user=user)
         job=job.objects.get(title=job)
         application = Application.objects.create(
             job=job,
