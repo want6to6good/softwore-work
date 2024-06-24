@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from rest_framework import mixins, viewsets
+from rest_framework.decorators import action
+
 from .models import Job,Application
 from user.models import Company,Jobseeker
 from .serializers import JobSerializer,ApplicationSerializer
@@ -91,8 +93,11 @@ class CreateJobView(APIView):
         )
 
         return Response({"detail": "工作岗位创建成功", "job_id": job.id}, status=status.HTTP_201_CREATED)
-class CreateApplicationView(APIView):
-    def post(self, request, *args, **kwargs):
+class CreateApplicationView(mixins.ListModelMixin, viewsets.GenericViewSet):
+    queryset = Application.objects.all()
+    serializer_class = ApplicationSerializer
+    @action(detail=False, methods=['post'])
+    def create_application(self, request, *args, **kwargs):
         name = request.data.get('username')
         job = request.data.get('jobname')
         # 校验必填字段
