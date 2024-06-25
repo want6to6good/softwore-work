@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from rest_framework.decorators import action
+from rest_framework.decorators import action, api_view
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -8,58 +8,59 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from rest_framework import mixins, viewsets
 from .serializers import ResumeSerializer
-
-class ResumeView(APIView):
-    """新建或修改个人简历"""
-    def post(self, request, *args, **kwargs):
-        username = request.data.get('name')
-        gender = request.data.get('sex')
-        education = request.data.get('education', '')
-        experience = request.data.get('experience', '')
-        skills = request.data.get('skills', '')
-        projects = request.data.get('projects', '')
-        certifications = request.data.get('certifications', '')
-        user = get_object_or_404(User, username=username)
-        jobseeker = Jobseeker.objects.get(user=user)
-        gender_map = {
-            '男': 'm',
-            '女': 'f'
+@api_view(['POST'])
+def change_resume(request):
+    username = request.data.get('username')
+    name = request.data.get('name')
+    gender = request.data.get('sex')
+    education = request.data.get('education', '')
+    experience = request.data.get('experience', '')
+    skills = request.data.get('skills', '')
+    projects = request.data.get('projects', '')
+    certifications = request.data.get('certifications', '')
+    user = get_object_or_404(User, username=username)
+    jobseeker = Jobseeker.objects.get(user=user)
+    gender_map = {
+        '男': 'm',
+        '女': 'f'
+    }
+    if gender in ['男', '女']:  # 检查性别值是否有效
+        jobseeker.gender = gender_map[gender]
+        jobseeker.save()
+    # 检查简历是否存在
+    resume, created = Resume.objects.update_or_create(
+        jobseeker=jobseeker,
+        defaults={
+            'education': education,
+            'experience': experience,
+            'skills': skills,
+            'projects': projects,
+            'certifications': certifications,
         }
-        if gender in ['男', '女']:  # 检查性别值是否有效
-            jobseeker.gender = gender_map[gender]
-            jobseeker.save()
-        # 检查简历是否存在
-        resume, created = Resume.objects.update_or_create(
-            jobseeker=jobseeker,
-            defaults={
-                'education': education,
-                'experience': experience,
-                'skills': skills,
-                'projects': projects,
-                'certifications': certifications,
-            }
-        )
-        if created:
-            return Response({"detail": "简历创建成功"}, status=status.HTTP_201_CREATED)
-        else:
-            return Response({"detail": "简历更新成功"}, status=status.HTTP_200_OK)
+    )
+    if created:
+        return Response({"detail": "简历创建成功"}, status=status.HTTP_201_CREATED)
+    else:
+        return Response({"detail": "简历更新成功"}, status=status.HTTP_200_OK)
 class ResumeListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     """职位申请列表页"""
     queryset = Resume.objects.all().order_by('id')
     serializer_class = ResumeSerializer
-    @action(detail=False, methods=['get'])
-    def get_resume(self, request):
-        username = request.query_params.get('username', None)
-        if username is not None:
-            try:
-                user = get_object_or_404(User, username=username)
-                jobseeker = Jobseeker.objects.get(user=user)
-                serializer = self.get_serializer(jobseeker)
-                return Response(serializer.data)
-            except Jobseeker.DoesNotExist:
-                return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
-        else:
-            return Response({"detail": "Username parameter is required."}, status=status.HTTP_400_BAD_REQUEST)
+@api_view(['GET'])
+def get_resume(request):
+    username = request.query_params.get('username', None)
+    print(username)
+    if username is not None:
+        try:
+            user = get_object_or_404(User, username=username)
+            jobseeker = Jobseeker.objects.get(user=user)
+            resumes = Resume.objects.filter(jobseeker=jobseeker)
+            serializer = ResumeSerializer(resumes,many=True)
+            return Response(serializer.data)
+        except Jobseeker.DoesNotExist:
+            return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
+    else:
+        return Response({"detail": "Username parameter is required."}, status=status.HTTP_400_BAD_REQUEST)
 def create_message(request):
     if request.method == 'POST':
         sender_username = request.POST.get('sender_name')

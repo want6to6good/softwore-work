@@ -20,8 +20,8 @@ from rest_framework_jwt.views import obtain_jwt_token
 from rest_framework.routers import DefaultRouter
 from job.views import JobListViewSet, ApplicationListViewSet, UpdateApplicationStatusView, CreateJobView, \
     CreateApplicationView
-from resume.views import ResumeView,ResumeListViewSet,create_message,get_user_messages,mark_message_as_read
-from user.views import JobseekerViewSet, HRViewSet, CompanyViewSet,UpdatePwdApi,RegisterViewSet
+from resume.views import change_resume,ResumeListViewSet,get_resume,create_message,get_user_messages,mark_message_as_read
+from user.views import JobseekerViewSet, HRViewSet, CompanyViewSet,UpdatePwdApi,RegisterViewSet,get_personal_info
 from question.views import ChoiceListViewSet,FillListViewSet,JudgeListViewSet,SubjectiveListViewSet
 
 router = DefaultRouter()
@@ -33,8 +33,8 @@ router.register(r'subjective', SubjectiveListViewSet)
 router.register(r'job', JobListViewSet)
 router.register(r'application', ApplicationListViewSet)
 router.register(r'application_create', CreateApplicationView)
-router.register(r'get_personal_info', JobseekerViewSet)
-router.register(r'get_resume',ResumeListViewSet)
+router.register(r'get_personal_info_list', JobseekerViewSet)
+router.register(r'get_resume_list',ResumeListViewSet)
 router.register(r'hr', HRViewSet)
 router.register(r'company', CompanyViewSet)
 router.register(r'register', RegisterViewSet)
@@ -47,9 +47,11 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
     path('update/', UpdateApplicationStatusView),
     path('create/', CreateJobView),
-    path('change_resume/', ResumeView),
+    path('change_resume/', change_resume),
     path('create_message/',create_message),
     path('get_messsage/',get_user_messages),
     path('markread/',mark_message_as_read),
+    path('get_resume/',get_resume),
+    path('get_personal_info/',get_personal_info),
     re_path('^', include(router.urls))
 ]

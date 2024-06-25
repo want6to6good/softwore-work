@@ -3,7 +3,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from django.db.models import Q
 from rest_framework import viewsets, mixins, status
-from rest_framework.decorators import action
+from rest_framework.decorators import action, api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
@@ -82,26 +82,23 @@ class UpdatePwdApi(APIView):
             return Response(data={'msg': 'fail'}, status=status.HTTP_200_OK)
         # 返回数据
         return Response(data={'msg': 'success'}, status=status.HTTP_200_OK)
-
 class JobseekerViewSet(viewsets.ModelViewSet):
     """求职者信息"""
     queryset = Jobseeker.objects.all().order_by('id')
     serializer_class = JobseekerSerializer
-
-    @action(detail=False, methods=['get'])
-    def get_personal_info(self, request):
-        username = request.query_params.get('username', None)
-        if username:
-            try:
-                user = get_object_or_404(User, username=username)
-                jobseeker = Jobseeker.objects.get(user=user)
-                serializer = self.get_serializer(jobseeker)
-                return Response(serializer.data)
-            except Jobseeker.DoesNotExist:
-                return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
-        else:
-            return Response({"detail": "Username parameter is required."}, status=status.HTTP_400_BAD_REQUEST)
-        
+@api_view(['GET'])
+def get_personal_info(request):
+    username = request.query_params.get('username', None)
+    if username:
+        try:
+            user = get_object_or_404(User, username=username)
+            jobseeker = Jobseeker.objects.get(user=user)
+            serializer = JobseekerSerializer(jobseeker)
+            return Response(serializer.data)
+        except Jobseeker.DoesNotExist:
+            return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
+    else:
+        return Response({"detail": "Username parameter is required."}, status=status.HTTP_400_BAD_REQUEST)
 class HRViewSet(viewsets.ModelViewSet):
     """HR信息"""
     # 查询集

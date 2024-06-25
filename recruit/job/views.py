@@ -93,7 +93,6 @@ class CreateJobView(APIView):
             location=location,
             salary=salary
         )
-
         return Response({"detail": "工作岗位创建成功", "job_id": job.id}, status=status.HTTP_201_CREATED)
 class CreateApplicationView(mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = Application.objects.all()
