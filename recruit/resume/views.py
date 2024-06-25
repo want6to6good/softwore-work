@@ -26,6 +26,7 @@ def change_resume(request):
     }
     if gender in ['男', '女']:  # 检查性别值是否有效
         jobseeker.gender = gender_map[gender]
+        jobseeker.name =name
         jobseeker.save()
     # 检查简历是否存在
     resume, created = Resume.objects.update_or_create(
