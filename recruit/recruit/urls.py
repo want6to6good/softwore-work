@@ -47,7 +47,7 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
     path('update/', UpdateApplicationStatusView),
     path('create/', CreateJobView),
-    path('chang_resume/', ResumeView),
+    path('change_resume/', ResumeView),
     path('create_message/',create_message),
     path('get_messsage/',get_user_messages),
     path('markread/',mark_message_as_read),

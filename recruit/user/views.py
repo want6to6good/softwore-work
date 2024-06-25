@@ -82,16 +82,16 @@ class UpdatePwdApi(APIView):
             return Response(data={'msg': 'fail'}, status=status.HTTP_200_OK)
         # 返回数据
         return Response(data={'msg': 'success'}, status=status.HTTP_200_OK)
+
 class JobseekerViewSet(viewsets.ModelViewSet):
     """求职者信息"""
-    # 查询集
     queryset = Jobseeker.objects.all().order_by('id')
-    # 序列化
     serializer_class = JobseekerSerializer
-    @action(detail=False, methods=['put'])
+
+    @action(detail=False, methods=['get'])
     def get_personal_info(self, request):
-        username = request.data.get('username', None)
-        if username is not None:
+        username = request.query_params.get('username', None)
+        if username:
             try:
                 user = get_object_or_404(User, username=username)
                 jobseeker = Jobseeker.objects.get(user=user)
@@ -101,6 +101,7 @@ class JobseekerViewSet(viewsets.ModelViewSet):
                 return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
         else:
             return Response({"detail": "Username parameter is required."}, status=status.HTTP_400_BAD_REQUEST)
+        
 class HRViewSet(viewsets.ModelViewSet):
     """HR信息"""
     # 查询集

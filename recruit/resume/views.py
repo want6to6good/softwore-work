@@ -8,6 +8,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from rest_framework import mixins, viewsets
 from .serializers import ResumeSerializer
+
 class ResumeView(APIView):
     """新建或修改个人简历"""
     def post(self, request, *args, **kwargs):
@@ -46,9 +47,9 @@ class ResumeListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     """职位申请列表页"""
     queryset = Resume.objects.all().order_by('id')
     serializer_class = ResumeSerializer
-    @action(detail=False, methods=['put'])
+    @action(detail=False, methods=['get'])
     def get_resume(self, request):
-        username = request.data.get('username', None)
+        username = request.query_params.get('username', None)
         if username is not None:
             try:
                 user = get_object_or_404(User, username=username)

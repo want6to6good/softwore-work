@@ -9,7 +9,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
+import logging
 
+logger = logging.getLogger(__name__)
 class JobListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     """职位列表页"""
     # 这里要定义一个默认的排序，否则会报错
@@ -96,18 +98,19 @@ class CreateJobView(APIView):
 class CreateApplicationView(mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = Application.objects.all()
     serializer_class = ApplicationSerializer
+    
     @action(detail=False, methods=['post'])
     def create_application(self, request, *args, **kwargs):
         name = request.data.get('username')
-        job = request.data.get('jobname')
+        job_title = request.data.get('jobname')
         # 校验必填字段
-        if not all([name,job]):
+        if not all([name,job_title]):
             return Response({"detail": "所有字段都是必填的"}, status=status.HTTP_400_BAD_REQUEST)
         user = get_object_or_404(User, username=name)
         seeker = Jobseeker.objects.get(user=user)
-        job=job.objects.get(title=job)
+        job_instance = Job.objects.get(title=job_title)  # 使用正确的模型类和变量名进行查询
         application = Application.objects.create(
-            job=job,
+            job=job_instance,
             jobseeker=seeker
         )
         return Response({"detail": "简历投递成功"}, status=status.HTTP_201_CREATED)

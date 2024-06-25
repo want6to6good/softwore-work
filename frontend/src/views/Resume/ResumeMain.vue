@@ -27,8 +27,8 @@ export default {
   data() {
     return {
       resumeData: {
-        portrait: 'path/to/image.jpg', // Placeholder for image path
-        name: '张三',
+        portrait: 'path/to/image.jpg',
+        name: '小汪',
         sex: '男',
         education: '某大学计算机科学与技术学院，本科，2012 - 2016',
         experience: '软件开发工程师，某科技公司，2016至今。负责公司产品后端开发与维护。',
@@ -40,13 +40,45 @@ export default {
   },
   methods: {
     editResume() {
-      // 跳转到简历修改页面
       this.$router.push({ name: 'ResumeView' });
+    },
+    fetchPersonalInfo() {
+      const username = this.$store.state.user.username;  // 从 Vuex 获取用户名
+      this.$axios.get('/api/get_personal_info/', {
+        params: {
+          username: username  // 将用户名作为查询参数发送
+        }
+      })
+      .then(response => {
+        console.log('Personal Info:', response.data);
+        // this.resumeData = response.data; // 根据需要更新 resumeData
+      })
+      .catch(error => {
+        console.error('Failed to fetch personal info:', error);
+      });
+    },
+    fetchPersonalResume() {
+      const username = this.$store.state.user.username;  // 从 Vuex 获取用户名
+      this.$axios.get('/api/get_resume/', {
+        params: {
+          username: username  // 将用户名作为查询参数发送
+        }
+      })
+      .then(response => {
+        console.log('Personal Resume:', response.data);
+        // this.resumeData = response.data; // 根据需要更新 resumeData
+      })
+      .catch(error => {
+        console.error('Failed to fetch personal resume:', error);
+      });
     }
+  },
+  mounted() {
+    this.fetchPersonalInfo();
+    this.fetchPersonalResume();
   }
 }
 </script>
-
 <style scoped>
 .resume-main {
   padding: 20px;

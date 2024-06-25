@@ -110,19 +110,21 @@ export default {
 			const jobname = job.title;
 			const username = this.username;
 
-			this.$axios(`/api/application_create/?format=json`, {
-				params: {
-					jobname: jobname,
-					username: username
-				}
+			this.$axios({
+  			url: '/api/application_create/create_application/',
+			method: 'post',
+			data: {
+				jobname: jobname,
+				username: username
+			}
 			}).then(response => {
-					this.$message.success('Application submitted successfully!');
-					console.log(response.data);
-				})
-				.catch(error => {
-					this.$message.error('Failed to submit application.');
-					console.error(error);
-				});
+				this.$message.success('Application submitted successfully!');
+				console.log(response.data);
+			})
+			.catch(error => {
+				this.$message.error('Failed to submit application.');
+				console.error(error);
+			});
 			}
 	},
 	created() {

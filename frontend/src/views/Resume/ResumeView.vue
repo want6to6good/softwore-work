@@ -35,14 +35,14 @@
 export default {
   name: 'ResumeView',
   data() {
-    console.log(this.$store.state.user)
+    // console.log(this.$store.state.user)
 
     return {
       resumeData: {
         // id: this.$store.state.user.id,
         // Include initial data similar to ResumeMain for demonstration
         portrait: 'path/to/image.jpg',
-        name: '张三',
+        name: '小汪',
         sex: '男',
         education: '某大学计算机科学与技术学院，本科，2012 - 2016',
         experience: '软件开发工程师，某科技公司，2016至今。负责公司产品后端开发与维护。',
@@ -55,17 +55,31 @@ export default {
   },
   methods: {
     submitChanges() {
-      console.log(this.resumeData)
-       axios.post('/api/change_resume', this.resumeData)
-    .then(response => {
-      console.log('Response:', response);
-      this.$message.success('修改已提交成功!');
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      this.$message.error('提交失败，请检查网络或联系管理员!');
-    });
-},
+      console.log(this.resumeData);
+      // Ensure the API endpoint URL is correct and includes trailing slash
+      this.$axios({
+        url: '/api/change_resume/',
+        method: 'post',
+        data: {
+          name: this.resumeData.name,
+          sex: this.resumeData.sex,
+          education: this.resumeData.education,
+          experience: this.resumeData.experience,
+          skills: this.resumeData.skills,
+          projects: this.resumeData.projects,
+          certifications: this.resumeData.certifications,
+          username: this.resumeData.username  // Make sure the backend is expecting a 'username' field
+        }
+      })
+      .then(response => {
+        console.log('Response:', response);
+        this.$message.success('简历修改已提交成功!');
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        this.$message.error('提交失败，请检查网络或联系管理员!');
+      });
+    },
     returnToMain() {
       this.$router.push({ name: 'ResumeMain' });
     }
