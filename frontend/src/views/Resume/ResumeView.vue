@@ -35,27 +35,23 @@
 export default {
   name: 'ResumeView',
   data() {
-    // console.log(this.$store.state.user)
-
     return {
       resumeData: {
-        // id: this.$store.state.user.id,
-        // Include initial data similar to ResumeMain for demonstration
         portrait: 'path/to/image.jpg',
-        name: '小汪',
-        sex: '男',
-        education: '某大学计算机科学与技术学院，本科，2012 - 2016',
-        experience: '软件开发工程师，某科技公司，2016至今。负责公司产品后端开发与维护。',
-        skills: '熟练使用Java, Python, JavaScript等编程语言；掌握Spring, Django, Vue.js框架。',
-        projects: '在线教育平台 - 主导后端开发和系统架构设计。',
-        certifications: 'Oracle Certified Java Programmer, 2018',
+        name: '',
+        sex: '',
+        education: '',
+        experience: '',
+        skills: '',
+        projects: '',
+        certifications: '',
         username: this.$store.state.user.username
       }
     }
   },
   methods: {
     submitChanges() {
-      console.log(this.resumeData);
+      // console.log(this.resumeData);
       // Ensure the API endpoint URL is correct and includes trailing slash
       this.$axios({
         url: '/api/change_resume/',
@@ -72,7 +68,7 @@ export default {
         }
       })
       .then(response => {
-        console.log('Response:', response);
+        // console.log('Response:', response);
         this.$message.success('简历修改已提交成功!');
       })
       .catch(error => {
@@ -82,8 +78,48 @@ export default {
     },
     returnToMain() {
       this.$router.push({ name: 'ResumeMain' });
+    }, 
+        fetchPersonalInfo() {
+      const username = this.$store.state.user.username;  // 从 Vuex 获取用户名
+      this.$axios.get('/api/get_personal_info/', {
+        params: {
+          username: username  // 将用户名作为查询参数发送
+        }
+      })
+      .then(response => {
+        // console.log('Personal Info:', response.data);
+        this.resumeData.name = response.data.name;
+        this.resumeData.sex = response.data.gender === 'm' ? '男' : '女';
+      })
+      .catch(error => {
+        console.error('Failed to fetch personal info:', error);
+      });
+    },
+    fetchPersonalResume() {
+      const username = this.$store.state.user.username;  // 从 Vuex 获取用户名
+      this.$axios.get('/api/get_resume/', {
+        params: {
+          username: username  // 将用户名作为查询参数发送
+        }
+      })
+      .then(response => {
+        console.log('Personal Resume:', response.data[0]);
+        this.resumeData.education = response.data[0].education;
+        this.resumeData.experience = response.data[0].experience;
+        this.resumeData.skills = response.data[0].skills;
+        this.resumeData.projects = response.data[0].projects;
+        this.resumeData.certifications = response.data[0].certifications;
+      })
+      .catch(error => {
+        console.error('Failed to fetch personal resume:', error);
+      });
     }
+  },
+  mounted() {
+    this.fetchPersonalInfo();
+    this.fetchPersonalResume();
   }
+
 }
 </script>
 <style scoped>

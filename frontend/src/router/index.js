@@ -17,46 +17,14 @@ const routes = [
 				title: '职位中心'
 			}
 		},
-          {
-            path: 'list',
-            name: 'JobList',
-            component: () => import('../views/Job/JobList.vue'),
-            meta: {
-              title: '职位列表'
-            }
-          },
-          {
-            path: 'details/:id',
-            name: 'JobDetails',
-            component: () => import('../views/Job/JobDetails.vue'),
-            meta: {
-              title: '职位详情'
-            }
-          },
-          {
-            path: 'apply',
-            name: 'JobApply',
-            component: () => import('../views/Job/JobApply.vue'),
-            meta: {
-              title: '申请职位'
-            }
-		  },
-			// {
-			// 	path: 'center',
-			// 	name: 'Center',
-			// 	component: () => import('../views/Job/Center.vue'),
-			// 	meta: {
-			// 		title: '个人中心'
-			// 	}
-			// },
-			{
-				path: 'password',
-				name: 'Password',
-				component: () => import('../views/Job/Password.vue'),
-				meta: {
-					title: '修改密码'
-				}
-			},
+		{
+			path: 'password',
+			name: 'Password',
+			component: () => import('../views/Job/Password.vue'),
+			meta: {
+				title: '修改密码'
+			}
+		},
 		]
 	},
 {

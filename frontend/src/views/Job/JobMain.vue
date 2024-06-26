@@ -59,8 +59,8 @@ export default {
 	},
 	methods: {
 		getJobInfo() {
-			console.log(this.page)
-			console.log(this.page_size)
+			// console.log(this.page)
+			// console.log(this.page_size)
 
 			this.$axios(`/api/job/?format=json`, {
 				params: {
@@ -68,7 +68,7 @@ export default {
 					page_size: this.page_size,
 				}
 			}).then(res => {
-				console.log(res.data);
+				// console.log(res.data);
 				this.pagination.results = res.data;
 				this.loading = false;
 			}).catch(error => {

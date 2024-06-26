@@ -28,13 +28,13 @@ export default {
     return {
       resumeData: {
         portrait: 'path/to/image.jpg',
-        name: '小汪',
-        sex: '男',
-        education: '某大学计算机科学与技术学院，本科，2012 - 2016',
-        experience: '软件开发工程师，某科技公司，2016至今。负责公司产品后端开发与维护。',
-        skills: '熟练使用Java, Python, JavaScript等编程语言；掌握Spring, Django, Vue.js框架。',
-        projects: '在线教育平台 - 主导后端开发和系统架构设计。',
-        certifications: 'Oracle Certified Java Programmer, 2018'
+        name: '',
+        sex: '',
+        education: '',
+        experience: '',
+        skills: '',
+        projects: '',
+        certifications: ''
       }
     }
   },
@@ -51,7 +51,8 @@ export default {
       })
       .then(response => {
         console.log('Personal Info:', response.data);
-        // this.resumeData = response.data; // 根据需要更新 resumeData
+        this.resumeData.name = response.data.name;
+        this.resumeData.sex = response.data.gender === 'm' ? '男' : '女';
       })
       .catch(error => {
         console.error('Failed to fetch personal info:', error);
@@ -65,7 +66,12 @@ export default {
         }
       })
       .then(response => {
-        console.log('Personal Resume:', response.data);
+        console.log('Personal Resume:', response.data[0]);
+        this.resumeData.education = response.data[0].education;
+        this.resumeData.experience = response.data[0].experience;
+        this.resumeData.skills = response.data[0].skills;
+        this.resumeData.projects = response.data[0].projects;
+        this.resumeData.certifications = response.data[0].certifications;
         // this.resumeData = response.data; // 根据需要更新 resumeData
       })
       .catch(error => {
