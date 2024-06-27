@@ -18,11 +18,16 @@
       <h2>代码编辑器</h2>
       <textarea v-model="code" rows="10" placeholder="在这里编写你的Python代码"></textarea>
     </div>
-    <el-button type="primary" @click="submitCode">提交代码</el-button>
-    <div v-if="testResult" class="test-result">
+      <el-button type="primary" @click="submitCode">提交代码</el-button>
+      <div v-if="testResult" class="test-result">
         <h3>测试结果：</h3>
-        <pre>{{ testResult }}</pre>
-    </div>
+          <pre>{{ testResult.stdout }}</pre>
+          <pre v-if="testResult.stderr" class="error">标准错误：{{ testResult.stderr }}</pre>
+          <p :class="{ 'success': testResult.stdout == 'All test cases passed!\n', 'error': testResult.stdout != 'All test cases passed!\n' }">
+            {{ testResult.stdout == 'All test cases passed!\n' ? '测试通过！' : '测试未通过。' }}
+
+          </p>
+      </div>
   </div>
 </template>
 
@@ -41,20 +46,25 @@ export default {
   methods: {
     async submitCode() {
       try {
-        console.log('Submitting code:', {
-          questionId: this.question.id,
-          code: this.code
-        });
+        //console.log('Submitting code:', {
+          //questionId: this.question.id,
+          //code: this.code
+        //});
 
         const response = await axios.post('/api/test-code/', {
           question_id: this.question.id,
           code: this.code
         });
         
-        this.testResult = response.data.result;
+        this.testResult = response.data;
+        console.log(this.testResult.stdout)
       } catch (error) {
         console.error('提交代码时出错:', error);
-        this.testResult = '提交代码时出错，请稍后再试。';
+        this.testResult = {
+          stdout: '',
+          stderr: '提交代码时出错，请稍后再试。',
+          returncode: 1
+        };
       }
     },
     async fetchQuestionData() {
@@ -147,6 +157,19 @@ h1 {
   padding: 10px;
   background-color: #f8f9fa;
   border-radius: 5px;
+}
+
+.test-result pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.error {
+  color: #d9534f;
+}
+
+.success {
+  color: #5cb85c;
 }
 
 textarea {

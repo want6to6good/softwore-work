@@ -12,7 +12,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
 class JobseekerSerializer(serializers.ModelSerializer):
     user_name = serializers.SerializerMethodField()
     # 用于创建的只写字段
-    user_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), source='user', write_only=True)
+    # user_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), source='user', write_only=True)
     class Meta:
         model = Jobseeker
         fields =['name', 'gender', 'user_name', ]

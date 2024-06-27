@@ -52,7 +52,9 @@ export default {
         { name: '联系人 001', avatar: '', lastMessage: '今天的消息内容' },
         { name: '联系人 002', avatar: '', lastMessage: '前天的消息内容' }
       ],
-      activeContact: { name: '联系人 001' } // Example active contact
+      activeContact: { name: '联系人 001' }, // Example active contact
+      currentUser: { name: '' },
+      chatMessages: [] // 添加这行来初始化聊天消息数组
     };
   },
   methods: {
@@ -66,9 +68,93 @@ export default {
       this.activeContact = contact;
     },
     sendMessage() {
-      console.log('Sending message: ', this.message);
-      this.message = ''; // Clear input after sending
-    }
+      if (!this.message.trim()) {
+        // 如果消息为空,不发送
+        return;
+      }
+
+      // 假设当前用户的用户名存储在 Vuex 中
+      const senderUsername = this.currentUser.name;
+      
+      // 接收者是当前活跃的联系人
+      const receiverUsername = this.activeContact.name;
+      console.log(senderUsername)
+      console.log(receiverUsername)
+
+      // 准备发送给后端的数据
+      const messageData = {
+        sender_name: senderUsername,
+        receiver_name: receiverUsername,
+        content: this.message
+      };
+
+      // 发送 POST 请求到后端
+      this.$axios.post('/api/create_message/', messageData)
+        .then(response => {
+          if (response.data.status === 'success') {
+            console.log('Message sent successfully:', response.data);
+            // 可以在这里更新UI,比如将消息添加到聊天记录中
+            this.updateChatMessages({
+              sender: senderUsername,
+              content: this.message,
+              timestamp: new Date(),
+              id: response.data.message_id
+            });
+            // 清空输入框
+            this.message = '';
+          } else {
+            console.error('Failed to send message');
+          }
+        })
+        .catch(error => {
+          console.error('Error sending message:', error);
+        });
+    },
+
+    // 新增方法来更新聊天记录
+    updateChatMessages(newMessage) {
+      // 这里你需要根据你的数据结构来实现
+      // 例如,你可能需要将新消息添加到某个数组中
+      if (!this.chatMessages) {
+        this.chatMessages = [];
+      }
+      this.chatMessages.push(newMessage);
+    },
+    fetchPersonalInfo() {
+      const username = this.$store.state.user.username;  // 从 Vuex 获取用户名
+      this.$axios.get('/api/get_personal_info/', {
+        params: {
+          username: username  // 将用户名作为查询参数发送
+        }
+      })
+      .then(response => {
+        console.log('Personal Info:', response.data);
+        this.currentUser.name = response.data.name;
+      })
+      .catch(error => {
+        console.error('Failed to fetch personal info:', error);
+      });
+    },
+    fetchAllPersonalInfo() {
+      const username = '';  // 从 Vuex 获取用户名
+      this.$axios.get('/api/get_personal_info_list/', {
+
+      })
+      .then(response => {
+        console.log('Personal Info:', response.data);
+        currentUser.name = response.data.name;
+      })
+      .catch(error => {
+        console.error('Failed to fetch personal info:', error);
+      });
+    },
+
+  },
+
+  
+  mounted() {
+    this.fetchPersonalInfo();
+    this.fetchAllPersonalInfo();
   }
 }
 </script>

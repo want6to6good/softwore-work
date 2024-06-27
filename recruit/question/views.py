@@ -1,7 +1,7 @@
 import os
 import subprocess
 from datetime import timezone
-
+import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import mixins, viewsets
@@ -73,32 +73,55 @@ class SubjectiveListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
         if subjective_number:
             self.queryset = Subjective.objects.all().filter(level=level).order_by('?')[:subjective_number]
         return self.queryset
-@csrf_exempt
-# @api_view(['POST'])
+
+
 def execute_code(request):
     if request.method == 'POST':
         try:
-            code = request.POST.get('code')
-            print(code)
+            data = json.loads(request.body)
+            code = data.get('code')
+            question_id = data.get('question_id')
+            # print("Received code:\n", code)
+            # print("Question ID:", question_id)
+
             if not code:
                 return JsonResponse({'error': 'No code provided'}, status=400)
-            # 创建一个唯一的文件名
-            timestamp = timezone.now().strftime('%Y%m%d%H%M%S%f')
-            filename = f'code_{timestamp}.py'
-            filepath = os.path.abspath(__file__)
-            # 将代码保存为文件
-            with open(filepath, 'w') as code_file:
-                code_file.write(code)
-            # 执行代码
-            result = subprocess.run(['python', filepath], capture_output=True, text=True, timeout=10)
-            # 删除文件
-            os.remove(filepath)
+
+            # 创建解决方案文件
+            solution_filename = f'{question_id}_solution.py'
+            solution_filepath = os.path.join(
+                os.path.dirname(__file__), solution_filename)
+
+            # 保存提交的代码
+            with open(solution_filepath, 'w') as solution_file:
+                solution_file.write(code)
+
+            # 测试脚本路径
+            test_script = f'test_files/test_question_{question_id}.py'
+            test_filepath = os.path.join(
+                os.path.dirname(__file__), test_script)
+
+            # 执行测试脚本
+            result = subprocess.run(
+                ['python', test_filepath, solution_filepath],
+                capture_output=True,
+                text=True,
+                timeout=10
+            )
+
+            # 删除解决方案文件
+            os.remove(solution_filepath)
+
+            print(result.stdout)
+
             return JsonResponse({
                 'stdout': result.stdout,
                 'stderr': result.stderr,
                 'returncode': result.returncode
             })
+
         except Exception as e:
+            print(f"Error: {str(e)}")
             return JsonResponse({'error': str(e)}, status=500)
     else:
         return JsonResponse({'error': 'Invalid request method'}, status=405)
