@@ -3,7 +3,7 @@
     <el-row>
       <!-- Python -->
       <el-col :span="8">
-        <el-card :body-style="{ padding: '20px' }">
+        <el-card :body-style="{ padding: '20px' }" @click.native="goToLanguageRoute('python')">
           <div style="display: flex; align-items: center;">
             <img src="@/assets/language/python.png" alt="Python logo" style="width: 50px; height: 50px; margin-right: 15px;">
             <h3>Python</h3>
@@ -12,7 +12,7 @@
       </el-col>
       <!-- C/C++ -->
       <el-col :span="8">
-        <el-card :body-style="{ padding: '20px' }">
+        <el-card :body-style="{ padding: '20px' }" @click.native="goToLanguageRoute('cpp')">
           <div style="display: flex; align-items: center;">
             <img src="@/assets/language/c++.png" alt="C++ logo" style="width: 50px; height: 50px; margin-right: 15px;">
             <h3>C/C++</h3>
@@ -21,7 +21,7 @@
       </el-col>
       <!-- Vue3 -->
       <el-col :span="8">
-        <el-card :body-style="{ padding: '20px' }">
+        <el-card :body-style="{ padding: '20px' }" @click.native="goToLanguageRoute('vue3')">
           <div style="display: flex; align-items: center;">
             <img src="@/assets/language/vue3.png" alt="Vue3 logo" style="width: 50px; height: 50px; margin-right: 15px;">
             <h3>Vue3</h3>
@@ -30,7 +30,7 @@
       </el-col>
       <!-- Java -->
       <el-col :span="8">
-        <el-card :body-style="{ padding: '20px' }">
+        <el-card :body-style="{ padding: '20px' }" @click.native="goToLanguageRoute('java')">
           <div style="display: flex; align-items: center;">
             <img src="@/assets/language/java.png" alt="Java logo" style="width: 50px; height: 50px; margin-right: 15px;">
             <h3>Java</h3>
@@ -39,7 +39,7 @@
       </el-col>
       <!-- JavaScript -->
       <el-col :span="8">
-        <el-card :body-style="{ padding: '20px' }">
+        <el-card :body-style="{ padding: '20px' }" @click.native="goToLanguageRoute('javascript')">
           <div style="display: flex; align-items: center;">
             <img src="@/assets/language/javascript.png" alt="JavaScript logo" style="width: 50px; height: 50px; margin-right: 15px;">
             <h3>JavaScript</h3>
@@ -48,7 +48,7 @@
       </el-col>
       <!-- Ruby -->
       <el-col :span="8">
-        <el-card :body-style="{ padding: '20px' }">
+        <el-card :body-style="{ padding: '20px' }" @click.native="goToLanguageRoute('ruby')">
           <div style="display: flex; align-items: center;">
             <img src="@/assets/language/ruby.png" alt="Ruby logo" style="width: 50px; height: 50px; margin-right: 15px;">
             <h3>Ruby</h3>
@@ -73,6 +73,11 @@ export default {
         { name: 'Ruby', imgSrc: '@/assets/language/ruby.png' }
       ]
     };
+  },
+  methods: {
+    goToLanguageRoute(language) {
+      this.$router.push({ path: `/interview/${language}` });
+    }
   },
   mounted() {
     this.languages.forEach(language => {

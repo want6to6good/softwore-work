@@ -67,14 +67,70 @@ const routes = [
 		path: '/interview',
 		component: Layout,
 		children: [
-			{
-				path: '',
-				component: () => import('../views/Interview/InterviewMain.vue'),
-				name: 'InterviewMain',
-				meta: {
-					title: '模拟面试'
-				}
+		{
+			path: '',
+			component: () => import('../views/Interview/InterviewMain.vue'),
+			name: 'InterviewMain',
+			meta: {
+			title: '模拟面试'
 			}
+		},
+		{
+			path: 'python',
+			component: () => import('../views/Interview/Python.vue'),
+			name: 'Python',
+			meta: {
+			title: 'Python 面试'
+			}
+		},
+		{
+			path: 'cpp',
+			component: () => import('../views/Interview/Cpp.vue'),
+			name: 'Cpp',
+			meta: {
+			title: 'C/C++ 面试'
+			}
+		},
+		{
+			path: 'vue3',
+			component: () => import('../views/Interview/Vue3.vue'),
+			name: 'Vue3',
+			meta: {
+			title: 'Vue3 面试'
+			}
+		},
+		{
+			path: 'java',
+			component: () => import('../views/Interview/Java.vue'),
+			name: 'Java',
+			meta: {
+			title: 'Java 面试'
+			}
+		},
+		{
+			path: 'javascript',
+			component: () => import('../views/Interview/JavaScript.vue'),
+			name: 'JavaScript',
+			meta: {
+			title: 'JavaScript 面试'
+			}
+		},
+		{
+			path: 'ruby',
+			component: () => import('../views/Interview/Ruby.vue'),
+			name: 'Ruby',
+			meta: {
+			title: 'Ruby 面试'
+			}
+			},
+		{
+		path: 'question/:id',
+		component: () => import('../views/Interview/QuestionDetail.vue'),
+		name: 'QuestionDetail',
+		meta: {
+			title: '题目详情'
+		}
+		}
 		]
 	},
 // 	{
@@ -169,14 +225,6 @@ const routes = [
 		component: () => import('../views/Register.vue'),
 		meta: {
 			title: '注册界面'
-		}
-	},
-	{
-		path: '/Pay',
-		name: 'Pay',
-		component: () => import('../views/Pay.vue'),
-		meta: {
-			title: '支付'
 		}
 	},
 	{
