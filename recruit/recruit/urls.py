@@ -22,7 +22,7 @@ from job.views import JobListViewSet, ApplicationListViewSet, UpdateApplicationS
     CreateApplicationView
 from resume.views import change_resume,ResumeListViewSet,get_resume,create_message,get_user_messages,mark_message_as_read
 from user.views import JobseekerViewSet, HRViewSet, CompanyViewSet,UpdatePwdApi,RegisterViewSet,get_personal_info
-from question.views import ChoiceListViewSet,FillListViewSet,JudgeListViewSet,SubjectiveListViewSet
+from question.views import ChoiceListViewSet,FillListViewSet,JudgeListViewSet,SubjectiveListViewSet,execute_code
 
 router = DefaultRouter()
 
@@ -52,6 +52,7 @@ urlpatterns = [
     path('get_messsage/',get_user_messages),
     path('markread/',mark_message_as_read),
     path('get_resume/',get_resume),
+    path('test-code/',execute_code),
     path('get_personal_info/',get_personal_info),
     re_path('^', include(router.urls))
 ]

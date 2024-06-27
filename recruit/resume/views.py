@@ -74,7 +74,7 @@ def create_message(request):
     return JsonResponse({'status': 'fail'}, status=400)
 # Create your views here.
 def get_user_messages(request):
-    if request.method == 'PUT':
+    if request.method == 'GET':
         username=request.POST.get('username')
         user = get_object_or_404(User, username=username)
         messages = Message.objects.filter(sender=user).union(Message.objects.filter(receiver=user)).order_by('-timestamp')

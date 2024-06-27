@@ -1,5 +1,11 @@
+import os
 import subprocess
+from datetime import timezone
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework import mixins, viewsets
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from question.models import Choice, Fill, Judge, Subjective
@@ -67,3 +73,32 @@ class SubjectiveListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
         if subjective_number:
             self.queryset = Subjective.objects.all().filter(level=level).order_by('?')[:subjective_number]
         return self.queryset
+@csrf_exempt
+# @api_view(['POST'])
+def execute_code(request):
+    if request.method == 'POST':
+        try:
+            code = request.POST.get('code')
+            print(code)
+            if not code:
+                return JsonResponse({'error': 'No code provided'}, status=400)
+            # 创建一个唯一的文件名
+            timestamp = timezone.now().strftime('%Y%m%d%H%M%S%f')
+            filename = f'code_{timestamp}.py'
+            filepath = os.path.abspath(__file__)
+            # 将代码保存为文件
+            with open(filepath, 'w') as code_file:
+                code_file.write(code)
+            # 执行代码
+            result = subprocess.run(['python', filepath], capture_output=True, text=True, timeout=10)
+            # 删除文件
+            os.remove(filepath)
+            return JsonResponse({
+                'stdout': result.stdout,
+                'stderr': result.stderr,
+                'returncode': result.returncode
+            })
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    else:
+        return JsonResponse({'error': 'Invalid request method'}, status=405)

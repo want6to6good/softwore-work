@@ -10,11 +10,14 @@ class UserDetailSerializer(serializers.ModelSerializer):
         model = User
         fields = '__all__'
 class JobseekerSerializer(serializers.ModelSerializer):
+    user_name = serializers.SerializerMethodField()
     # 用于创建的只写字段
     user_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), source='user', write_only=True)
     class Meta:
         model = Jobseeker
-        fields = '__all__'
+        fields =['name', 'gender', 'user_name', ]
+    def get_user_name(self, obj):
+        return obj.user.username
 class HRSerializer(serializers.ModelSerializer):
     # 用于创建的只写字段
     user_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), source='user', write_only=True)
