@@ -1,5 +1,6 @@
 from django.http import JsonResponse
 from rest_framework.decorators import action, api_view
+from django.db.models import Q
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -62,31 +63,46 @@ def get_resume(request):
             return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
     else:
         return Response({"detail": "Username parameter is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
 def create_message(request):
+    print(request.data)
     if request.method == 'POST':
-        sender_username = request.POST.get('sender_name')
-        receiver_username = request.POST.get('receiver_name')
-        content = request.POST.get('content')
+        sender_username = request.data.get('sender_name')
+        receiver_username = request.data.get('receiver_name')
+        content = request.data.get('content')
         sender = get_object_or_404(User, username=sender_username)
         receiver = get_object_or_404(User, username=receiver_username)
         message = Message.objects.create(sender=sender, receiver=receiver, content=content)
         return JsonResponse({'status': 'success', 'message_id': message.id})
     return JsonResponse({'status': 'fail'}, status=400)
 # Create your views here.
+
+
 def get_user_messages(request):
     if request.method == 'GET':
-        username=request.POST.get('username')
+        username = request.GET.get('username')
         user = get_object_or_404(User, username=username)
-        messages = Message.objects.filter(sender=user).union(Message.objects.filter(receiver=user)).order_by('-timestamp')
+
+        # 使用 Q 对象来组合查询条件
+        messages = Message.objects.filter(
+            Q(sender=user) | Q(receiver=user)
+        ).order_by('-timestamp')
+
         messages_data = [{
             'sender': message.sender.username,
             'receiver': message.receiver.username,
             'content': message.content,
             'timestamp': message.timestamp,
             'is_read': message.is_read,
-            'id':message.id,
+            'id': message.id,
         } for message in messages]
+        
+        print(messages_data)
     return JsonResponse({'messages': messages_data})
+
+
 def mark_message_as_read(request):
     if request.method == 'POST':
         message_id = request.POST.get('message_id')

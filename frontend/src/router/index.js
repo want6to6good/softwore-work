@@ -133,68 +133,6 @@ const routes = [
 		}
 		]
 	},
-// 	{
-// 		path: '/',
-// 		component: Layout,
-// 		redirect: '/exam',
-// 		children: [{
-// 				path: 'exam',
-// 				component: () => import('../views/Exam.vue'),
-// 				name: 'exam',
-// 				meta: {
-// 					title: '考试中心'
-// 				}
-// 			},
-// 			{
-// 				path: 'practice',
-// 				name: 'Practice',
-// 				component: () => import('../views/Practice.vue'),
-// 				meta: {
-// 					title: '模拟练习'
-// 				}
-// 			},
-// 			{
-// 				path: 'grade',
-// 				name: 'Grade',
-// 				component: () => import('../views/Grade.vue'),
-// 				meta: {
-// 					title: '查询成绩'
-// 				}
-// 			},
-// 			{
-// 				path: 'center',
-// 				name: 'Center',
-// 				component: () => import('../views/Center.vue'),
-// 				meta: {
-// 					title: '个人中心'
-// 				}
-// 			},
-// 			{
-// 				path: 'password',
-// 				name: 'Password',
-// 				component: () => import('../views/Password.vue'),
-// 				meta: {
-// 					title: '修改密码'
-// 				}
-// 			},
-// 			{
-// 				path: 'paper',
-// 				name: 'Paper',
-// 				component: () => import('../views/Paper.vue'),
-// 				meta: {
-// 					title: '试卷详情'
-// 				}
-// 			},
-// 			{
-// 				path: 'score',
-// 				name: 'Score',
-// 				component: () => import('../views/Score.vue'),
-// 				meta: {
-// 					title: '考试得分'
-// 				}
-// 			}
-// 		]
-// },
 	{
 		path: '/answer',
 		name: 'Answer',

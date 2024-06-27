@@ -49,7 +49,7 @@ urlpatterns = [
     path('create/', CreateJobView),
     path('change_resume/', change_resume),
     path('create_message/',create_message),
-    path('get_messsage/',get_user_messages),
+    path('get_messages/',get_user_messages),
     path('markread/',mark_message_as_read),
     path('get_resume/',get_resume),
     path('test-code/',execute_code),
