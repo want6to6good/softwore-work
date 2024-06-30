@@ -67,7 +67,7 @@ def get_resume(request):
 
 @api_view(['POST'])
 def create_message(request):
-    print(request.data)
+    # print(request.data)
     if request.method == 'POST':
         sender_username = request.data.get('sender_name')
         receiver_username = request.data.get('receiver_name')
@@ -99,7 +99,7 @@ def get_user_messages(request):
             'id': message.id,
         } for message in messages]
         
-        print(messages_data)
+        # print(messages_data)
     return JsonResponse({'messages': messages_data})
 
 
