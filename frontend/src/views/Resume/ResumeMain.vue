@@ -2,7 +2,8 @@
   <div class="resume-main">
     <h1>简历中心</h1>
     <div class="resume-info">
-      <el-avatar :src="resumeData.portrait" size="large"></el-avatar>
+      <!-- <el-avatar :src="resumeData.portrait" size="large"></el-avatar> -->
+      <el-avatar :src="avatarSrc" size="large"></el-avatar>
       <div><label>姓名：</label>{{ resumeData.name }}</div>
       <div><label>性别：</label>{{ resumeData.sex }}</div>
       <div><label>教育经历：</label>{{ resumeData.education }}</div>
@@ -26,8 +27,8 @@ export default {
   name: 'ResumeMain',
   data() {
     return {
+      avatarSrc: require('@/assets/avatar.jpg'),
       resumeData: {
-        portrait: 'path/to/image.jpg',
         name: '',
         sex: '',
         education: '',

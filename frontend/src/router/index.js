@@ -134,22 +134,6 @@ const routes = [
 		]
 	},
 	{
-		path: '/answer',
-		name: 'Answer',
-		component: () => import('../views/Answer.vue'),
-		meta: {
-			title: '答题界面'
-		}
-	},
-	{
-		path: '/record',
-		name: 'Record',
-		component: () => import('../views/Record.vue'),
-		meta: {
-			title: '练习记录'
-		}
-	},
-	{
 		path: '/login',
 		name: 'Login',
 		component: () => import('../views/Login.vue'),

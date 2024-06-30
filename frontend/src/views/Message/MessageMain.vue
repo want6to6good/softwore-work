@@ -9,7 +9,9 @@
           @click="setActiveContact(contact)">
           <el-row align="middle">
             <el-col :span="6">
-              <el-avatar :src="contact.avatar || 'default-avatar.png'"></el-avatar>
+              <el-avatar :style="{ backgroundColor: getAvatarColor(contact.username) }">
+                {{ contact.avatar }}
+              </el-avatar>
             </el-col>
             <el-col :span="18">
               <div class="name-message-container">
@@ -129,6 +131,27 @@ export default {
       this.chatMessages = this.chatMessages.slice(0, 10);
     },
 
+    getFirstChar(username) {
+      if (!username) return '';
+      const firstChar = username.charAt(0);
+      return /^[a-zA-Z]$/.test(firstChar) ? firstChar.toUpperCase() : firstChar;
+    },
+
+    getAvatarColor(username) {
+      // 使用用户名生成一个简单的哈希值
+      let hash = 0;
+      for (let i = 0; i < username.length; i++) {
+        hash = username.charCodeAt(i) + ((hash << 5) - hash);
+      }
+      // 将哈希值转换为颜色
+      let color = '#';
+      for (let i = 0; i < 3; i++) {
+        const value = (hash >> (i * 8)) & 0xFF;
+        color += ('00' + value.toString(16)).substr(-2);
+      }
+      return color;
+    },
+
     fetchChatMessages() {
       // 获取别人给自己发过来的消息
       console.log(this.currentUser.username);
@@ -148,19 +171,16 @@ export default {
       });
     },
 
-
     fetchPersonalInfo() {
-      const username = this.$store.state.user.username;  // 从 Vuex 获取用户名
-      this.$axios.get('/api/get_personal_info/', {
+      const username = this.$store.state.user.username;
+      return this.$axios.get('/api/get_personal_info/', {
         params: {
-          username: username  // 将用户名作为查询参数发送
+          username: username
         }
       })
       .then(response => {
-        //console.log('Personal Info:', response.data);
         this.currentUser.name = response.data.name;
         this.currentUser.username = response.data.user_name;
-        //console.log(this.currentUser);
       })
       .catch(error => {
         console.error('Failed to fetch personal info:', error);
@@ -168,23 +188,22 @@ export default {
     },
 
     fetchAllPersonalInfo() {
-      this.$axios.get('/api/get_personal_info_list/')
+      return this.$axios.get('/api/get_personal_info_list/')
         .then(response => {
-          // console.log('All Personal Info:', response.data);
-          // 将获取的数据转换为contacts数组的格式
           this.contacts = response.data
             .filter(user => user.user_name !== this.currentUser.username)
             .map(user => ({
               name: user.name,
               username: user.user_name,
-              avatar: '', // 如果有头像信息，可以在这里添加
-              lastMessage: '' // 如果有最后一条消息，可以在这里添加
-          }));
+              avatar: this.getFirstChar(user.name),
+              lastMessage: ''
+            }));
         })
         .catch(error => {
           console.error('Failed to fetch all personal info:', error);
         });
     },
+
 
     setActiveContact(contact) {
       this.activeContact = {
@@ -201,16 +220,22 @@ export default {
     }
   },
 
-  
   mounted() {
-    this.fetchPersonalInfo();
-    this.fetchAllPersonalInfo();
+      this.fetchPersonalInfo().then(() => {
+      this.fetchAllPersonalInfo();
+    });
   }
 }
 
 
 </script>
 <style scoped>
+
+.el-avatar {
+  font-size: 22px;
+  color: white;
+}
+
 .message-main {
   border: 2px solid #d3d3d3; /* 设置边框 */
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* 可选: 添加轻微的阴影效果 */
